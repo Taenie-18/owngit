@@ -1,0 +1,1183 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:divorce-dispute:1.0.0",
+  "type": "object",
+  "properties": {
+    "docType": {
+      "const": "divorce-dispute"
+    },
+    "blocks": {
+      "type": "object",
+      "properties": {
+        "parties": {
+          "type": "object",
+          "properties": {
+            "原告": {
+              "type": [
+                "array",
+                "null"
+              ],
+              "items": {
+                "type": "object",
+                "properties": {
+                  "category": {
+                    "const": "自然人"
+                  },
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": [
+                          "string",
+                          "null"
+                        ],
+                        "minLength": 1,
+                        "description": "本名；关系称谓不拼进姓名；只录入被明确列为该诉讼角色的人。"
+                      },
+                      "gender": {
+                        "type": [
+                          "string",
+                          "null"
+                        ],
+                        "enum": [
+                          "男",
+                          "女",
+                          null
+                        ],
+                        "description": "只依据明示性别或可靠勾选，不从证件号码推导。"
+                      },
+                      "birth": {
+                        "type": [
+                          "string",
+                          "null"
+                        ],
+                        "minLength": 1,
+                        "description": "明确完整出生日期，展示为YYYY年M月D日；不从身份证推导，不补全缺失年月日。"
+                      },
+                      "ethnicity": {
+                        "type": [
+                          "string",
+                          "null"
+                        ],
+                        "minLength": 1,
+                        "description": "明确民族。"
+                      },
+                      "workUnit": {
+                        "type": [
+                          "string",
+                          "null"
+                        ],
+                        "minLength": 1,
+                        "description": "当前自然人的工作单位。"
+                      },
+                      "position": {
+                        "type": [
+                          "string",
+                          "null"
+                        ],
+                        "minLength": 1,
+                        "description": "当前自然人的职务。"
+                      },
+                      "phone": {
+                        "type": [
+                          "string",
+                          "null"
+                        ],
+                        "minLength": 1,
+                        "description": "电话号码保留字符串；多个号码保留原有分隔和顺序。"
+                      },
+                      "domicile": {
+                        "type": [
+                          "string",
+                          "null"
+                        ],
+                        "minLength": 1,
+                        "description": "住所地或户籍所在地，不等于经常居住地，不相互补齐。"
+                      },
+                      "residence": {
+                        "type": [
+                          "string",
+                          "null"
+                        ],
+                        "minLength": 1,
+                        "description": "经常居住地，不能用住所地补齐。"
+                      },
+                      "idType": {
+                        "type": [
+                          "string",
+                          "null"
+                        ],
+                        "minLength": 1,
+                        "description": "原文证件类型，不从号码自动补齐。"
+                      },
+                      "idNumber": {
+                        "type": [
+                          "string",
+                          "null"
+                        ],
+                        "minLength": 1,
+                        "description": "证件号码原样保留，不能转数值。"
+                      }
+                    },
+                    "required": [
+                      "name",
+                      "gender",
+                      "birth",
+                      "ethnicity",
+                      "workUnit",
+                      "position",
+                      "phone",
+                      "domicile",
+                      "residence",
+                      "idType",
+                      "idNumber"
+                    ],
+                    "additionalProperties": false,
+                    "description": ""
+                  }
+                },
+                "required": [
+                  "category",
+                  "data"
+                ],
+                "additionalProperties": false,
+                "description": ""
+              },
+              "minItems": 1,
+              "description": "实际被列为原告的自然人；父母、子女不自动加入。"
+            },
+            "委托诉讼代理人": {
+              "type": [
+                "array",
+                "null"
+              ],
+              "items": {
+                "type": "object",
+                "properties": {
+                  "category": {
+                    "const": "代理人"
+                  },
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "has": {
+                        "type": [
+                          "string",
+                          "null"
+                        ],
+                        "enum": [
+                          "有",
+                          "无",
+                          null
+                        ],
+                        "description": "是否委托；明确无时只保留一条has=无记录，其余为null；未提及不生成代理人。"
+                      },
+                      "name": {
+                        "type": [
+                          "string",
+                          "null"
+                        ],
+                        "minLength": 1,
+                        "description": "代理人姓名。"
+                      },
+                      "unit": {
+                        "type": [
+                          "string",
+                          "null"
+                        ],
+                        "minLength": 1,
+                        "description": "代理人执业机构或单位。"
+                      },
+                      "position": {
+                        "type": [
+                          "string",
+                          "null"
+                        ],
+                        "minLength": 1,
+                        "description": "代理人职务。"
+                      },
+                      "phone": {
+                        "type": [
+                          "string",
+                          "null"
+                        ],
+                        "minLength": 1,
+                        "description": "代理人联系电话。"
+                      },
+                      "authority": {
+                        "oneOf": [
+                          {
+                            "type": [
+                              "string",
+                              "null"
+                            ],
+                            "enum": [
+                              "一般授权",
+                              "特别授权",
+                              null
+                            ],
+                            "description": "代理权限；有附加授权原文时使用value/text对象。"
+                          },
+                          {
+                            "type": "object",
+                            "properties": {
+                              "value": {
+                                "type": [
+                                  "string",
+                                  "null"
+                                ],
+                                "enum": [
+                                  "一般授权",
+                                  "特别授权",
+                                  null
+                                ],
+                                "description": "明确授权类型。"
+                              },
+                              "text": {
+                                "type": [
+                                  "string",
+                                  "null"
+                                ],
+                                "minLength": 1,
+                                "description": "授权范围原文；不依据律师身份推断。"
+                              }
+                            },
+                            "required": [
+                              "value",
+                              "text"
+                            ],
+                            "additionalProperties": false,
+                            "description": ""
+                          }
+                        ]
+                      }
+                    },
+                    "required": [
+                      "has",
+                      "name",
+                      "unit",
+                      "position",
+                      "phone",
+                      "authority"
+                    ],
+                    "additionalProperties": false,
+                    "description": ""
+                  }
+                },
+                "required": [
+                  "category",
+                  "data"
+                ],
+                "additionalProperties": false,
+                "description": ""
+              },
+              "minItems": 1,
+              "description": "明确无时单条has=无，其余null；未提及整体null。"
+            },
+            "被告": {
+              "type": [
+                "array",
+                "null"
+              ],
+              "items": {
+                "type": "object",
+                "properties": {
+                  "category": {
+                    "const": "自然人"
+                  },
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": [
+                          "string",
+                          "null"
+                        ],
+                        "minLength": 1,
+                        "description": "本名；关系称谓不拼进姓名；只录入被明确列为该诉讼角色的人。"
+                      },
+                      "gender": {
+                        "type": [
+                          "string",
+                          "null"
+                        ],
+                        "enum": [
+                          "男",
+                          "女",
+                          null
+                        ],
+                        "description": "只依据明示性别或可靠勾选，不从证件号码推导。"
+                      },
+                      "birth": {
+                        "type": [
+                          "string",
+                          "null"
+                        ],
+                        "minLength": 1,
+                        "description": "明确完整出生日期，展示为YYYY年M月D日；不从身份证推导，不补全缺失年月日。"
+                      },
+                      "ethnicity": {
+                        "type": [
+                          "string",
+                          "null"
+                        ],
+                        "minLength": 1,
+                        "description": "明确民族。"
+                      },
+                      "workUnit": {
+                        "type": [
+                          "string",
+                          "null"
+                        ],
+                        "minLength": 1,
+                        "description": "当前自然人的工作单位。"
+                      },
+                      "position": {
+                        "type": [
+                          "string",
+                          "null"
+                        ],
+                        "minLength": 1,
+                        "description": "当前自然人的职务。"
+                      },
+                      "phone": {
+                        "type": [
+                          "string",
+                          "null"
+                        ],
+                        "minLength": 1,
+                        "description": "电话号码保留字符串；多个号码保留原有分隔和顺序。"
+                      },
+                      "domicile": {
+                        "type": [
+                          "string",
+                          "null"
+                        ],
+                        "minLength": 1,
+                        "description": "住所地或户籍所在地，不等于经常居住地，不相互补齐。"
+                      },
+                      "residence": {
+                        "type": [
+                          "string",
+                          "null"
+                        ],
+                        "minLength": 1,
+                        "description": "经常居住地，不能用住所地补齐。"
+                      },
+                      "idType": {
+                        "type": [
+                          "string",
+                          "null"
+                        ],
+                        "minLength": 1,
+                        "description": "原文证件类型，不从号码自动补齐。"
+                      },
+                      "idNumber": {
+                        "type": [
+                          "string",
+                          "null"
+                        ],
+                        "minLength": 1,
+                        "description": "证件号码原样保留，不能转数值。"
+                      }
+                    },
+                    "required": [
+                      "name",
+                      "gender",
+                      "birth",
+                      "ethnicity",
+                      "workUnit",
+                      "position",
+                      "phone",
+                      "domicile",
+                      "residence",
+                      "idType",
+                      "idNumber"
+                    ],
+                    "additionalProperties": false,
+                    "description": ""
+                  }
+                },
+                "required": [
+                  "category",
+                  "data"
+                ],
+                "additionalProperties": false,
+                "description": ""
+              },
+              "minItems": 1,
+              "description": "实际被列为被告的自然人。"
+            }
+          },
+          "required": [
+            "原告",
+            "委托诉讼代理人",
+            "被告"
+          ],
+          "additionalProperties": false,
+          "description": ""
+        },
+        "claims": {
+          "type": "object",
+          "properties": {
+            "narrative": {
+              "type": [
+                "array",
+                "null"
+              ],
+              "items": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "minLength": 1,
+                "description": "一条原文明示请求，保留条件和编号；允许保守分行，不增加新请求。"
+              },
+              "minItems": 1,
+              "description": "诉请正文分行；只整理明示请求。"
+            },
+            "1": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "minLength": 1,
+              "description": "明确提出的解除婚姻关系请求；仅叙述婚姻不等于提出离婚请求。"
+            },
+            "2": {
+              "type": "object",
+              "properties": {
+                "财产项": {
+                  "type": [
+                    "array",
+                    "null"
+                  ],
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "类型": {
+                        "type": [
+                          "string",
+                          "null"
+                        ],
+                        "minLength": 1,
+                        "description": "财产类型，例如房屋、汽车、存款、股权、债权；不限于示例四种。"
+                      },
+                      "明细": {
+                        "type": [
+                          "string",
+                          "null"
+                        ],
+                        "minLength": 1,
+                        "description": "该财产原文描述；数量及单位必须保留；不编造独立明细。"
+                      },
+                      "归属": {
+                        "type": [
+                          "string",
+                          "null"
+                        ],
+                        "enum": [
+                          "原告",
+                          "被告",
+                          "其他",
+                          null
+                        ],
+                        "description": "原文明示的请求归属，不等于现有权属；未来转赠不能改变本次请求归属。"
+                      },
+                      "备注": {
+                        "type": [
+                          "string",
+                          "null"
+                        ],
+                        "minLength": 1,
+                        "description": "其他归属说明、附加条件或未来赠予等；不得增加原文未有内容。"
+                      }
+                    },
+                    "required": [
+                      "类型",
+                      "明细",
+                      "归属",
+                      "备注"
+                    ],
+                    "additionalProperties": false,
+                    "description": ""
+                  },
+                  "minItems": 1,
+                  "description": "有明细的财产记录；模板空白项不生成。"
+                },
+                "其他财产": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "minLength": 1,
+                  "description": "原文明示其他财产栏；已有独立财产记录的内容不再重复放入。"
+                },
+                "tick": {
+                  "type": [
+                    "array",
+                    "null"
+                  ],
+                  "items": {
+                    "type": "string",
+                    "enum": [
+                      "无财产",
+                      "有财产"
+                    ]
+                  },
+                  "minItems": 1,
+                  "description": "只提取明确选择或明确请求；未提及为null；不从沉默推否。",
+                  "uniqueItems": true
+                }
+              },
+              "required": [
+                "财产项",
+                "其他财产",
+                "tick"
+              ],
+              "additionalProperties": false,
+              "description": ""
+            },
+            "3": {
+              "type": "object",
+              "properties": {
+                "债务项": {
+                  "type": [
+                    "array",
+                    "null"
+                  ],
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "名称": {
+                        "type": [
+                          "string",
+                          "null"
+                        ],
+                        "minLength": 1,
+                        "description": "该债务的完整原文描述，包括金额、用途、包含关系；含在总额中的金额不得另建记录重复累计。"
+                      },
+                      "承担主体": {
+                        "type": [
+                          "string",
+                          "null"
+                        ],
+                        "enum": [
+                          "原告",
+                          "被告",
+                          "其他",
+                          null
+                        ],
+                        "description": "请求由谁承担，不自行认定共同或个人债务。"
+                      },
+                      "备注": {
+                        "type": [
+                          "string",
+                          "null"
+                        ],
+                        "minLength": 1,
+                        "description": "原文明示的债务条件或补充说明。"
+                      }
+                    },
+                    "required": [
+                      "名称",
+                      "承担主体",
+                      "备注"
+                    ],
+                    "additionalProperties": false,
+                    "description": ""
+                  },
+                  "minItems": 1,
+                  "description": "逐条明确债务；不把包含的部分金额另计。"
+                },
+                "tick": {
+                  "type": [
+                    "array",
+                    "null"
+                  ],
+                  "items": {
+                    "type": "string",
+                    "enum": [
+                      "无债务",
+                      "有债务"
+                    ]
+                  },
+                  "minItems": 1,
+                  "description": "只提取明确选择或明确请求；未提及为null；不从沉默推否。",
+                  "uniqueItems": true
+                }
+              },
+              "required": [
+                "债务项",
+                "tick"
+              ],
+              "additionalProperties": false,
+              "description": ""
+            },
+            "4": {
+              "type": "object",
+              "properties": {
+                "子女项": {
+                  "type": [
+                    "array",
+                    "null"
+                  ],
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "姓名": {
+                        "type": [
+                          "string",
+                          "null"
+                        ],
+                        "minLength": 1,
+                        "description": "子女明确姓名；仅有一子/一女且无姓名时不建立全空条目，信息保留事实中。"
+                      },
+                      "归属": {
+                        "type": [
+                          "string",
+                          "null"
+                        ],
+                        "enum": [
+                          "原告",
+                          "被告",
+                          null
+                        ],
+                        "description": "请求直接抚养主体；不根据当前随谁生活自行推定请求。"
+                      }
+                    },
+                    "required": [
+                      "姓名",
+                      "归属"
+                    ],
+                    "additionalProperties": false,
+                    "description": ""
+                  },
+                  "minItems": 1,
+                  "description": "本次直接抚养请求相关子女，不自动包含所有亲属。"
+                },
+                "tick": {
+                  "type": [
+                    "array",
+                    "null"
+                  ],
+                  "items": {
+                    "type": "string",
+                    "enum": [
+                      "无此问题",
+                      "有此问题"
+                    ]
+                  },
+                  "minItems": 1,
+                  "description": "只提取明确选择或明确请求；未提及为null；不从沉默推否。",
+                  "uniqueItems": true
+                }
+              },
+              "required": [
+                "子女项",
+                "tick"
+              ],
+              "additionalProperties": false,
+              "description": ""
+            },
+            "5": {
+              "type": "object",
+              "properties": {
+                "金额及明细": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "minLength": 1,
+                  "description": "抚养费金额、每名子女标准、周期及期限完整保留，不自行计算。"
+                },
+                "支付方式": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "minLength": 1,
+                  "description": "明确支付方式及付款日期。"
+                },
+                "tick": {
+                  "type": [
+                    "array",
+                    "null"
+                  ],
+                  "items": {
+                    "type": "string",
+                    "enum": [
+                      "无此问题",
+                      "有此问题",
+                      "原告",
+                      "被告"
+                    ]
+                  },
+                  "minItems": 1,
+                  "description": "只提取明确选择或明确请求；未提及为null；不从沉默推否。",
+                  "uniqueItems": true
+                }
+              },
+              "required": [
+                "金额及明细",
+                "支付方式",
+                "tick"
+              ],
+              "additionalProperties": false,
+              "description": ""
+            },
+            "6": {
+              "type": "object",
+              "properties": {
+                "行使方式": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "minLength": 1,
+                  "description": "探望安排原文，不新增时间、接送人或次数。"
+                },
+                "tick": {
+                  "type": [
+                    "array",
+                    "null"
+                  ],
+                  "items": {
+                    "type": "string",
+                    "enum": [
+                      "无此问题",
+                      "有此问题",
+                      "原告",
+                      "被告"
+                    ]
+                  },
+                  "minItems": 1,
+                  "description": "只提取明确选择或明确请求；未提及为null；不从沉默推否。",
+                  "uniqueItems": true
+                }
+              },
+              "required": [
+                "行使方式",
+                "tick"
+              ],
+              "additionalProperties": false,
+              "description": ""
+            },
+            "7": {
+              "type": "object",
+              "properties": {
+                "损害赔偿金额": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "minLength": 1,
+                  "description": "明确主张的离婚损害赔偿金额，保留数字、单位或原文，不计算或从其他金额推定。"
+                },
+                "经济补偿金额": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "minLength": 1,
+                  "description": "明确主张的离婚经济补偿金额。"
+                },
+                "经济帮助金额": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "minLength": 1,
+                  "description": "明确主张的离婚经济帮助金额。"
+                },
+                "tick": {
+                  "type": [
+                    "array",
+                    "null"
+                  ],
+                  "items": {
+                    "type": "string",
+                    "enum": [
+                      "无此问题",
+                      "离婚损害赔偿",
+                      "离婚经济补偿",
+                      "离婚经济帮助"
+                    ]
+                  },
+                  "minItems": 1,
+                  "description": "只提取明确选择或明确请求；未提及为null；不从沉默推否。",
+                  "uniqueItems": true
+                }
+              },
+              "required": [
+                "损害赔偿金额",
+                "经济补偿金额",
+                "经济帮助金额",
+                "tick"
+              ],
+              "additionalProperties": false,
+              "description": ""
+            },
+            "8": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "enum": [
+                "是",
+                "否",
+                null
+              ],
+              "description": "是否明确请求诉讼费用；未提及为null。"
+            },
+            "9": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "minLength": 1,
+              "description": "明确的其他请求；不将已有请求重复放入。"
+            }
+          },
+          "required": [
+            "narrative",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "7",
+            "8",
+            "9"
+          ],
+          "additionalProperties": false,
+          "description": ""
+        },
+        "jurisdiction": {
+          "type": "object",
+          "properties": {
+            "1": {
+              "type": "object",
+              "properties": {
+                "保全法院": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "minLength": 1,
+                  "description": "已经实施诉前保全的法院。"
+                },
+                "保全时间": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "minLength": 1,
+                  "description": "已发生保全的明确完整日期；展示为YYYY年M月D日。"
+                },
+                "保全案号": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "minLength": 1,
+                  "description": "已经实施保全的案号。"
+                },
+                "tick": {
+                  "type": [
+                    "array",
+                    "null"
+                  ],
+                  "items": {
+                    "type": "string",
+                    "enum": [
+                      "是",
+                      "否"
+                    ]
+                  },
+                  "minItems": 1,
+                  "description": "只提取明确选择或明确请求；未提及为null；不从沉默推否。",
+                  "uniqueItems": true
+                }
+              },
+              "required": [
+                "保全法院",
+                "保全时间",
+                "保全案号",
+                "tick"
+              ],
+              "additionalProperties": false,
+              "description": ""
+            }
+          },
+          "required": [
+            "1"
+          ],
+          "additionalProperties": false,
+          "description": ""
+        },
+        "facts": {
+          "type": "object",
+          "properties": {
+            "narrative": {
+              "type": [
+                "array",
+                "null"
+              ],
+              "items": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "minLength": 1,
+                "description": "原文事实段落或保守摘录，保留指控、主张等语气；不补充请求或法律依据。",
+                "not": {
+                  "enum": [
+                    "无",
+                    "否",
+                    "是",
+                    "有此问题",
+                    "无此问题"
+                  ]
+                }
+              },
+              "minItems": 1,
+              "description": "事实与理由自由正文分段；有独立正文时只取该正文，不重复拼入后续分项、法条或模板标签。没有独立正文时可保守摘录连贯事实。"
+            },
+            "1": {
+              "type": "object",
+              "properties": {
+                "结婚时间": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "minLength": 1,
+                  "description": "明确登记结婚日期；完整日期展示为YYYY年M月D日，不用同居或婚礼日期替代。"
+                },
+                "生育子女情况": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "minLength": 1,
+                  "description": "明确子女姓名、出生、成年等情况；不得从其他身份号推导。"
+                },
+                "双方生活情况": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "minLength": 1,
+                  "description": "明确共同生活、分居等情况，不推定时长。"
+                },
+                "离婚事由": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "minLength": 1,
+                  "description": "原文明示离婚事由，保留陈述主体，不把指控变成已证实事实。"
+                },
+                "之前离婚诉讼": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "minLength": 1,
+                  "description": "原文有无既往离婚诉讼及经过；未提及为null。"
+                }
+              },
+              "required": [
+                "结婚时间",
+                "生育子女情况",
+                "双方生活情况",
+                "离婚事由",
+                "之前离婚诉讼"
+              ],
+              "additionalProperties": false,
+              "description": ""
+            },
+            "2": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "minLength": 1,
+              "description": "共同财产相关事实。请求归属不能改写成现有权属；只提取事实，不从空白栏推无。"
+            },
+            "3": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "minLength": 1,
+              "description": "共同债务相关事实，保留争议和否认；不能自行认定共同债务。"
+            },
+            "4": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "minLength": 1,
+              "description": "子女直接抚养相关事实；明确无可填无，未提及null。"
+            },
+            "5": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "minLength": 1,
+              "description": "抚养费相关事实；不从收入比例计算金额。"
+            },
+            "6": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "minLength": 1,
+              "description": "探望权相关事实，不把诉请自动变成既有安排。"
+            },
+            "7": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "minLength": 1,
+              "description": "赔偿、补偿、经济帮助的事实；不推导法律资格。"
+            },
+            "8": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "minLength": 1,
+              "description": "原文其他事实，不自行生成无其他争议。"
+            },
+            "9": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "minLength": 1,
+              "description": "只转录原文明示的请求依据与法律条文；禁止补全、检索或生成法条。"
+            },
+            "10": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "minLength": 1,
+              "description": "只转录明确证据清单，用换行字符串；事实中提及某材料不自动生成清单。"
+            }
+          },
+          "required": [
+            "narrative",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "7",
+            "8",
+            "9",
+            "10"
+          ],
+          "additionalProperties": false,
+          "description": ""
+        },
+        "mediation": {
+          "type": "object",
+          "properties": {
+            "1": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "enum": [
+                "了解",
+                "不了解",
+                null
+              ],
+              "description": "总体了解程度；固定告知内容不代表本人选择。"
+            },
+            "2": {
+              "type": "array",
+              "items": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "enum": [
+                  "了解",
+                  "不了解",
+                  null
+                ],
+                "description": "本槽位独立选择；未知null。"
+              },
+              "minItems": 5,
+              "maxItems": 5,
+              "description": "五槽位依次为调解启动排期、费用、更换组织调解员、保密性、协议效力；只说了解不代填五项。"
+            },
+            "3": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "enum": [
+                "是",
+                "否",
+                "暂不确定，想要了解更多内容",
+                null
+              ],
+              "description": "明确调解意愿；不从了解推愿意。"
+            }
+          },
+          "required": [
+            "1",
+            "2",
+            "3"
+          ],
+          "additionalProperties": false,
+          "description": ""
+        },
+        "signature": {
+          "type": "object",
+          "properties": {
+            "signer": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "minLength": 1,
+              "description": "仅落款实际签署或明确指定的具状人；不能由原告姓名自动补齐；多人按原文顺序换行。"
+            }
+          },
+          "required": [
+            "signer"
+          ],
+          "additionalProperties": false,
+          "description": ""
+        }
+      },
+      "required": [
+        "parties",
+        "claims",
+        "jurisdiction",
+        "facts",
+        "mediation",
+        "signature"
+      ],
+      "additionalProperties": false,
+      "description": ""
+    }
+  },
+  "required": [
+    "docType",
+    "blocks"
+  ],
+  "additionalProperties": false,
+  "description": ""
+}

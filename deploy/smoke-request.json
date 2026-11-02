@@ -1,0 +1,7 @@
+{
+  "requestId": "test-server-smoke-001",
+  "businessType": "divorce-dispute",
+  "fileContext": [
+    "以下为虚构接口联调案例。原告：测试甲，女。被告：测试乙，男。双方结婚时间未提供。原告请求解除婚姻关系。原告未申请诉前财产保全，未委托诉讼代理人。"
+  ]
+}

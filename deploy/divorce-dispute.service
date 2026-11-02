@@ -1,0 +1,20 @@
+[Unit]
+Description=Divorce dispute JSON extraction test service
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=simple
+# 修改为实际存在的普通Linux运行账号，并确保其能读取项目和虚拟环境。
+User=appuser
+WorkingDirectory=/opt/divorce-dispute
+EnvironmentFile=/etc/divorce-dispute.env
+Environment=PYTHONUNBUFFERED=1
+# 仅单进程运行；代码中的5个模型调用配额是按进程计算的。
+ExecStart=/opt/divorce-dispute/.venv/bin/python -m uvicorn app.api:app --host 0.0.0.0 --port 8000 --workers 1 --timeout-graceful-shutdown 300
+Restart=on-failure
+RestartSec=5
+TimeoutStopSec=330
+
+[Install]
+WantedBy=multi-user.target

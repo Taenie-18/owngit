@@ -1,0 +1,43 @@
+# Python缓存、虚拟环境和本地构建产物
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+env/
+build/
+dist/
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# 本地配置和密钥；只提交不含真实值的配置模板
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+
+# 编辑器、操作系统和运行日志
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+desktop.ini
+*.swp
+*.swo
+~$*
+*.log
+/logs/
+
+# 本次测试发布只上传运行所需代码。
+# doc、reports及tests中含真实案件材料，部分测试源码也硬编码了个人信息。
+# 本地文件保留；后续脱敏后再单独纳入版本控制。
+/doc/
+/reports/
+/tests/
+/scripts/
