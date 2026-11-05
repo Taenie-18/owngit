@@ -1,0 +1,21 @@
+[Unit]
+Description=Element extraction independent staging API
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=simple
+User=root
+Group=root
+WorkingDirectory=/vdb1/divorce_dispute_staging
+EnvironmentFile=/etc/divorce-dispute.env
+Environment=PYTHONUNBUFFERED=1
+# 复用服务器现有Conda环境，临时端口仅供服务器本机独立验证。
+ExecStart=/root/miniconda3/bin/python -m uvicorn app.api:app --host 127.0.0.1 --port 8011 --workers 1 --timeout-graceful-shutdown 300
+Restart=on-failure
+RestartSec=5
+TimeoutStopSec=330
+UMask=0077
+
+[Install]
+WantedBy=multi-user.target

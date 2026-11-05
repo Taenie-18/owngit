@@ -1,15 +1,19 @@
 """定义请求、模型结果和统一错误，供各层共享。"""
 from dataclasses import dataclass, field
 from typing import Any
+from .config import BUSINESS_TYPE
 
 
 class ExtractionError(Exception):
     """各层使用同一错误类型，HTTP层只负责转换状态码和错误体。"""
     def __init__(self, code: str, message: str, *, status: int = 422,
-                 fields: list[str] | None = None, retryable: bool = False):
+                 fields: list[str] | None = None, retryable: bool = False,
+                 stage: str | None = None, diagnostics: dict | None = None):
         super().__init__(message)
         self.code, self.message, self.status = (code, message, status)
         self.fields, self.retryable = (fields or [], retryable)
+        # 内部诊断单独保存，HTTP错误体仍由body统一生成。
+        self.stage, self.diagnostics = stage, dict(diagnostics or {})
 
     def body(self, request_id=None):
         return {'requestId': request_id, 'error': {'code': self.code,
@@ -21,6 +25,7 @@ class Document:
     """通过输入校验的案件；冻结后避免并发任务修改共享原文。"""
     request_id: str
     file_context: tuple[str, ...]
+    business_type: str = BUSINESS_TYPE
 
 
 @dataclass(frozen=True)

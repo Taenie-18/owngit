@@ -1,0 +1,2166 @@
+{
+  "version": "1.0.0",
+  "source": "user-confirmed private-lending-full.json + Word template",
+  "rules": [
+    "仅抽取明确内容，未知null，不计算金额或利息。",
+    "其他选项说明使用value/text，组织extra仅联系人。"
+  ],
+  "fields": [
+    {
+      "fieldId": "L001",
+      "path": "/blocks/parties/原告/*/data/name",
+      "task": "parties",
+      "description": "本名；只依据明确诉讼角色，不从法定代表人、联系人或担保关系推定为当事人。",
+      "schema": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "minLength": 1,
+        "description": "本名；只依据明确诉讼角色，不从法定代表人、联系人或担保关系推定为当事人。"
+      },
+      "whenCategory": "自然人"
+    },
+    {
+      "fieldId": "L002",
+      "path": "/blocks/parties/原告/*/data/gender",
+      "task": "parties",
+      "description": "只依据明示性别或可靠勾选，不从证件号码推导。",
+      "schema": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "enum": [
+          "男",
+          "女",
+          null
+        ],
+        "description": "只依据明示性别或可靠勾选，不从证件号码推导。"
+      },
+      "whenCategory": "自然人"
+    },
+    {
+      "fieldId": "L003",
+      "path": "/blocks/parties/原告/*/data/birth",
+      "task": "parties",
+      "description": "出生日期，不从身份证推导；只填明确完整日期，不补年月日。",
+      "schema": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "minLength": 1,
+        "description": "出生日期，不从身份证推导；只填明确完整日期，不补年月日。",
+        "pattern": "^\\d{4}(?:年|-)\\d{1,2}(?:月|-)\\d{1,2}日?$"
+      },
+      "whenCategory": "自然人"
+    },
+    {
+      "fieldId": "L004",
+      "path": "/blocks/parties/原告/*/data/ethnicity",
+      "task": "parties",
+      "description": "明确民族。",
+      "schema": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "minLength": 1,
+        "description": "明确民族。"
+      },
+      "whenCategory": "自然人"
+    },
+    {
+      "fieldId": "L005",
+      "path": "/blocks/parties/原告/*/data/workUnit",
+      "task": "parties",
+      "description": "当前自然人的工作单位。",
+      "schema": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "minLength": 1,
+        "description": "当前自然人的工作单位。"
+      },
+      "whenCategory": "自然人"
+    },
+    {
+      "fieldId": "L006",
+      "path": "/blocks/parties/原告/*/data/position",
+      "task": "parties",
+      "description": "当前自然人的职务。",
+      "schema": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "minLength": 1,
+        "description": "当前自然人的职务。"
+      },
+      "whenCategory": "自然人"
+    },
+    {
+      "fieldId": "L007",
+      "path": "/blocks/parties/原告/*/data/phone",
+      "task": "parties",
+      "description": "电话号码保留字符串；多个号码保留原有分隔和顺序。",
+      "schema": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "minLength": 1,
+        "description": "电话号码保留字符串；多个号码保留原有分隔和顺序。"
+      },
+      "whenCategory": "自然人"
+    },
+    {
+      "fieldId": "L008",
+      "path": "/blocks/parties/原告/*/data/domicile",
+      "task": "parties",
+      "description": "住所地或户籍所在地，不等于经常居住地，不相互补齐。",
+      "schema": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "minLength": 1,
+        "description": "住所地或户籍所在地，不等于经常居住地，不相互补齐。"
+      },
+      "whenCategory": "自然人"
+    },
+    {
+      "fieldId": "L009",
+      "path": "/blocks/parties/原告/*/data/residence",
+      "task": "parties",
+      "description": "经常居住地，不能用住所地补齐。",
+      "schema": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "minLength": 1,
+        "description": "经常居住地，不能用住所地补齐。"
+      },
+      "whenCategory": "自然人"
+    },
+    {
+      "fieldId": "L010",
+      "path": "/blocks/parties/原告/*/data/idType",
+      "task": "parties",
+      "description": "原文证件类型，不从号码自动补齐。",
+      "schema": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "minLength": 1,
+        "description": "原文证件类型，不从号码自动补齐。"
+      },
+      "whenCategory": "自然人"
+    },
+    {
+      "fieldId": "L011",
+      "path": "/blocks/parties/原告/*/data/idNumber",
+      "task": "parties",
+      "description": "证件号码原样保留，不能转数值。",
+      "schema": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "minLength": 1,
+        "description": "证件号码原样保留，不能转数值。"
+      },
+      "whenCategory": "自然人"
+    },
+    {
+      "fieldId": "L012",
+      "path": "/blocks/parties/原告/*/data/name",
+      "task": "parties",
+      "description": "组织完整名称",
+      "schema": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "minLength": 1,
+        "description": "组织完整名称"
+      },
+      "whenCategory": "法人、非法人组织"
+    },
+    {
+      "fieldId": "L013",
+      "path": "/blocks/parties/原告/*/data/domicile",
+      "task": "parties",
+      "description": "住所地或主要办事机构所在地",
+      "schema": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "minLength": 1,
+        "description": "住所地或主要办事机构所在地"
+      },
+      "whenCategory": "法人、非法人组织"
+    },
+    {
+      "fieldId": "L014",
+      "path": "/blocks/parties/原告/*/data/registrationPlace",
+      "task": "parties",
+      "description": "注册地或登记地，与住所地不互相补齐",
+      "schema": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "minLength": 1,
+        "description": "注册地或登记地，与住所地不互相补齐"
+      },
+      "whenCategory": "法人、非法人组织"
+    },
+    {
+      "fieldId": "L015",
+      "path": "/blocks/parties/原告/*/data/legalRep",
+      "task": "parties",
+      "description": "法定代表人或主要负责人姓名，不能因此自动新增自然人当事人",
+      "schema": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "minLength": 1,
+        "description": "法定代表人或主要负责人姓名，不能因此自动新增自然人当事人"
+      },
+      "whenCategory": "法人、非法人组织"
+    },
+    {
+      "fieldId": "L016",
+      "path": "/blocks/parties/原告/*/data/position",
+      "task": "parties",
+      "description": "法定代表人或主要负责人职务",
+      "schema": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "minLength": 1,
+        "description": "法定代表人或主要负责人职务"
+      },
+      "whenCategory": "法人、非法人组织"
+    },
+    {
+      "fieldId": "L017",
+      "path": "/blocks/parties/原告/*/data/phone",
+      "task": "parties",
+      "description": "该组织的联系电话",
+      "schema": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "minLength": 1,
+        "description": "该组织的联系电话"
+      },
+      "whenCategory": "法人、非法人组织"
+    },
+    {
+      "fieldId": "L018",
+      "path": "/blocks/parties/原告/*/data/creditCode",
+      "task": "parties",
+      "description": "统一社会信用代码，保留字符串",
+      "schema": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "minLength": 1,
+        "description": "统一社会信用代码，保留字符串"
+      },
+      "whenCategory": "法人、非法人组织"
+    },
+    {
+      "fieldId": "L019",
+      "path": "/blocks/parties/原告/*/data/type/*",
+      "task": "parties",
+      "description": "按原文明示的类型和选项抽取；未知null；附加说明使用value/text。",
+      "schema": {
+        "type": "string",
+        "enum": [
+          "有限责任公司",
+          "股份有限公司",
+          "上市公司",
+          "其他企业法人",
+          "事业单位",
+          "社会团体",
+          "基金会",
+          "社会服务机构",
+          "机关法人",
+          "农村集体经济组织法人",
+          "城镇农村的合作经济组织法人",
+          "基层群众性自治组织法人",
+          "个人独资企业",
+          "合伙企业",
+          "不具有法人资格的专业服务机构"
+        ]
+      },
+      "whenCategory": "法人、非法人组织"
+    },
+    {
+      "fieldId": "L020",
+      "path": "/blocks/parties/原告/*/data/ownership",
+      "task": "parties",
+      "description": "明确所有制选项；不能从公司名称推定",
+      "schema": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "minLength": 1,
+        "description": "明确所有制选项；不能从公司名称推定",
+        "enum": [
+          "国有",
+          "控股",
+          "参股",
+          "民营",
+          "其他",
+          null
+        ]
+      },
+      "whenCategory": "法人、非法人组织"
+    },
+    {
+      "fieldId": "L021",
+      "path": "/blocks/parties/原告/*/data/extra/联系人",
+      "task": "parties",
+      "description": "该组织明确联系人信息；只保留此扩展键",
+      "schema": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "minLength": 1,
+        "description": "该组织明确联系人信息；只保留此扩展键"
+      },
+      "whenCategory": "法人、非法人组织"
+    },
+    {
+      "fieldId": "L022",
+      "path": "/blocks/parties/被告/*/data/name",
+      "task": "parties",
+      "description": "本名；只依据明确诉讼角色，不从法定代表人、联系人或担保关系推定为当事人。",
+      "schema": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "minLength": 1,
+        "description": "本名；只依据明确诉讼角色，不从法定代表人、联系人或担保关系推定为当事人。"
+      },
+      "whenCategory": "自然人"
+    },
+    {
+      "fieldId": "L023",
+      "path": "/blocks/parties/被告/*/data/gender",
+      "task": "parties",
+      "description": "只依据明示性别或可靠勾选，不从证件号码推导。",
+      "schema": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "enum": [
+          "男",
+          "女",
+          null
+        ],
+        "description": "只依据明示性别或可靠勾选，不从证件号码推导。"
+      },
+      "whenCategory": "自然人"
+    },
+    {
+      "fieldId": "L024",
+      "path": "/blocks/parties/被告/*/data/birth",
+      "task": "parties",
+      "description": "出生日期，不从身份证推导；只填明确完整日期，不补年月日。",
+      "schema": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "minLength": 1,
+        "description": "出生日期，不从身份证推导；只填明确完整日期，不补年月日。",
+        "pattern": "^\\d{4}(?:年|-)\\d{1,2}(?:月|-)\\d{1,2}日?$"
+      },
+      "whenCategory": "自然人"
+    },
+    {
+      "fieldId": "L025",
+      "path": "/blocks/parties/被告/*/data/ethnicity",
+      "task": "parties",
+      "description": "明确民族。",
+      "schema": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "minLength": 1,
+        "description": "明确民族。"
+      },
+      "whenCategory": "自然人"
+    },
+    {
+      "fieldId": "L026",
+      "path": "/blocks/parties/被告/*/data/workUnit",
+      "task": "parties",
+      "description": "当前自然人的工作单位。",
+      "schema": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "minLength": 1,
+        "description": "当前自然人的工作单位。"
+      },
+      "whenCategory": "自然人"
+    },
+    {
+      "fieldId": "L027",
+      "path": "/blocks/parties/被告/*/data/position",
+      "task": "parties",
+      "description": "当前自然人的职务。",
+      "schema": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "minLength": 1,
+        "description": "当前自然人的职务。"
+      },
+      "whenCategory": "自然人"
+    },
+    {
+      "fieldId": "L028",
+      "path": "/blocks/parties/被告/*/data/phone",
+      "task": "parties",
+      "description": "电话号码保留字符串；多个号码保留原有分隔和顺序。",
+      "schema": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "minLength": 1,
+        "description": "电话号码保留字符串；多个号码保留原有分隔和顺序。"
+      },
+      "whenCategory": "自然人"
+    },
+    {
+      "fieldId": "L029",
+      "path": "/blocks/parties/被告/*/data/domicile",
+      "task": "parties",
+      "description": "住所地或户籍所在地，不等于经常居住地，不相互补齐。",
+      "schema": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "minLength": 1,
+        "description": "住所地或户籍所在地，不等于经常居住地，不相互补齐。"
+      },
+      "whenCategory": "自然人"
+    },
+    {
+      "fieldId": "L030",
+      "path": "/blocks/parties/被告/*/data/residence",
+      "task": "parties",
+      "description": "经常居住地，不能用住所地补齐。",
+      "schema": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "minLength": 1,
+        "description": "经常居住地，不能用住所地补齐。"
+      },
+      "whenCategory": "自然人"
+    },
+    {
+      "fieldId": "L031",
+      "path": "/blocks/parties/被告/*/data/idType",
+      "task": "parties",
+      "description": "原文证件类型，不从号码自动补齐。",
+      "schema": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "minLength": 1,
+        "description": "原文证件类型，不从号码自动补齐。"
+      },
+      "whenCategory": "自然人"
+    },
+    {
+      "fieldId": "L032",
+      "path": "/blocks/parties/被告/*/data/idNumber",
+      "task": "parties",
+      "description": "证件号码原样保留，不能转数值。",
+      "schema": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "minLength": 1,
+        "description": "证件号码原样保留，不能转数值。"
+      },
+      "whenCategory": "自然人"
+    },
+    {
+      "fieldId": "L033",
+      "path": "/blocks/parties/被告/*/data/name",
+      "task": "parties",
+      "description": "组织完整名称",
+      "schema": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "minLength": 1,
+        "description": "组织完整名称"
+      },
+      "whenCategory": "法人、非法人组织"
+    },
+    {
+      "fieldId": "L034",
+      "path": "/blocks/parties/被告/*/data/domicile",
+      "task": "parties",
+      "description": "住所地或主要办事机构所在地",
+      "schema": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "minLength": 1,
+        "description": "住所地或主要办事机构所在地"
+      },
+      "whenCategory": "法人、非法人组织"
+    },
+    {
+      "fieldId": "L035",
+      "path": "/blocks/parties/被告/*/data/registrationPlace",
+      "task": "parties",
+      "description": "注册地或登记地，与住所地不互相补齐",
+      "schema": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "minLength": 1,
+        "description": "注册地或登记地，与住所地不互相补齐"
+      },
+      "whenCategory": "法人、非法人组织"
+    },
+    {
+      "fieldId": "L036",
+      "path": "/blocks/parties/被告/*/data/legalRep",
+      "task": "parties",
+      "description": "法定代表人或主要负责人姓名，不能因此自动新增自然人当事人",
+      "schema": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "minLength": 1,
+        "description": "法定代表人或主要负责人姓名，不能因此自动新增自然人当事人"
+      },
+      "whenCategory": "法人、非法人组织"
+    },
+    {
+      "fieldId": "L037",
+      "path": "/blocks/parties/被告/*/data/position",
+      "task": "parties",
+      "description": "法定代表人或主要负责人职务",
+      "schema": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "minLength": 1,
+        "description": "法定代表人或主要负责人职务"
+      },
+      "whenCategory": "法人、非法人组织"
+    },
+    {
+      "fieldId": "L038",
+      "path": "/blocks/parties/被告/*/data/phone",
+      "task": "parties",
+      "description": "该组织的联系电话",
+      "schema": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "minLength": 1,
+        "description": "该组织的联系电话"
+      },
+      "whenCategory": "法人、非法人组织"
+    },
+    {
+      "fieldId": "L039",
+      "path": "/blocks/parties/被告/*/data/creditCode",
+      "task": "parties",
+      "description": "统一社会信用代码，保留字符串",
+      "schema": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "minLength": 1,
+        "description": "统一社会信用代码，保留字符串"
+      },
+      "whenCategory": "法人、非法人组织"
+    },
+    {
+      "fieldId": "L040",
+      "path": "/blocks/parties/被告/*/data/type/*",
+      "task": "parties",
+      "description": "按原文明示的类型和选项抽取；未知null；附加说明使用value/text。",
+      "schema": {
+        "type": "string",
+        "enum": [
+          "有限责任公司",
+          "股份有限公司",
+          "上市公司",
+          "其他企业法人",
+          "事业单位",
+          "社会团体",
+          "基金会",
+          "社会服务机构",
+          "机关法人",
+          "农村集体经济组织法人",
+          "城镇农村的合作经济组织法人",
+          "基层群众性自治组织法人",
+          "个人独资企业",
+          "合伙企业",
+          "不具有法人资格的专业服务机构"
+        ]
+      },
+      "whenCategory": "法人、非法人组织"
+    },
+    {
+      "fieldId": "L041",
+      "path": "/blocks/parties/被告/*/data/ownership",
+      "task": "parties",
+      "description": "明确所有制选项；不能从公司名称推定",
+      "schema": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "minLength": 1,
+        "description": "明确所有制选项；不能从公司名称推定",
+        "enum": [
+          "国有",
+          "控股",
+          "参股",
+          "民营",
+          "其他",
+          null
+        ]
+      },
+      "whenCategory": "法人、非法人组织"
+    },
+    {
+      "fieldId": "L042",
+      "path": "/blocks/parties/被告/*/data/extra/联系人",
+      "task": "parties",
+      "description": "该组织明确联系人信息；只保留此扩展键",
+      "schema": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "minLength": 1,
+        "description": "该组织明确联系人信息；只保留此扩展键"
+      },
+      "whenCategory": "法人、非法人组织"
+    },
+    {
+      "fieldId": "L043",
+      "path": "/blocks/parties/第三人/*/data/name",
+      "task": "parties",
+      "description": "本名；只依据明确诉讼角色，不从法定代表人、联系人或担保关系推定为当事人。",
+      "schema": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "minLength": 1,
+        "description": "本名；只依据明确诉讼角色，不从法定代表人、联系人或担保关系推定为当事人。"
+      },
+      "whenCategory": "自然人"
+    },
+    {
+      "fieldId": "L044",
+      "path": "/blocks/parties/第三人/*/data/gender",
+      "task": "parties",
+      "description": "只依据明示性别或可靠勾选，不从证件号码推导。",
+      "schema": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "enum": [
+          "男",
+          "女",
+          null
+        ],
+        "description": "只依据明示性别或可靠勾选，不从证件号码推导。"
+      },
+      "whenCategory": "自然人"
+    },
+    {
+      "fieldId": "L045",
+      "path": "/blocks/parties/第三人/*/data/birth",
+      "task": "parties",
+      "description": "出生日期，不从身份证推导；只填明确完整日期，不补年月日。",
+      "schema": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "minLength": 1,
+        "description": "出生日期，不从身份证推导；只填明确完整日期，不补年月日。",
+        "pattern": "^\\d{4}(?:年|-)\\d{1,2}(?:月|-)\\d{1,2}日?$"
+      },
+      "whenCategory": "自然人"
+    },
+    {
+      "fieldId": "L046",
+      "path": "/blocks/parties/第三人/*/data/ethnicity",
+      "task": "parties",
+      "description": "明确民族。",
+      "schema": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "minLength": 1,
+        "description": "明确民族。"
+      },
+      "whenCategory": "自然人"
+    },
+    {
+      "fieldId": "L047",
+      "path": "/blocks/parties/第三人/*/data/workUnit",
+      "task": "parties",
+      "description": "当前自然人的工作单位。",
+      "schema": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "minLength": 1,
+        "description": "当前自然人的工作单位。"
+      },
+      "whenCategory": "自然人"
+    },
+    {
+      "fieldId": "L048",
+      "path": "/blocks/parties/第三人/*/data/position",
+      "task": "parties",
+      "description": "当前自然人的职务。",
+      "schema": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "minLength": 1,
+        "description": "当前自然人的职务。"
+      },
+      "whenCategory": "自然人"
+    },
+    {
+      "fieldId": "L049",
+      "path": "/blocks/parties/第三人/*/data/phone",
+      "task": "parties",
+      "description": "电话号码保留字符串；多个号码保留原有分隔和顺序。",
+      "schema": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "minLength": 1,
+        "description": "电话号码保留字符串；多个号码保留原有分隔和顺序。"
+      },
+      "whenCategory": "自然人"
+    },
+    {
+      "fieldId": "L050",
+      "path": "/blocks/parties/第三人/*/data/domicile",
+      "task": "parties",
+      "description": "住所地或户籍所在地，不等于经常居住地，不相互补齐。",
+      "schema": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "minLength": 1,
+        "description": "住所地或户籍所在地，不等于经常居住地，不相互补齐。"
+      },
+      "whenCategory": "自然人"
+    },
+    {
+      "fieldId": "L051",
+      "path": "/blocks/parties/第三人/*/data/residence",
+      "task": "parties",
+      "description": "经常居住地，不能用住所地补齐。",
+      "schema": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "minLength": 1,
+        "description": "经常居住地，不能用住所地补齐。"
+      },
+      "whenCategory": "自然人"
+    },
+    {
+      "fieldId": "L052",
+      "path": "/blocks/parties/第三人/*/data/idType",
+      "task": "parties",
+      "description": "原文证件类型，不从号码自动补齐。",
+      "schema": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "minLength": 1,
+        "description": "原文证件类型，不从号码自动补齐。"
+      },
+      "whenCategory": "自然人"
+    },
+    {
+      "fieldId": "L053",
+      "path": "/blocks/parties/第三人/*/data/idNumber",
+      "task": "parties",
+      "description": "证件号码原样保留，不能转数值。",
+      "schema": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "minLength": 1,
+        "description": "证件号码原样保留，不能转数值。"
+      },
+      "whenCategory": "自然人"
+    },
+    {
+      "fieldId": "L054",
+      "path": "/blocks/parties/第三人/*/data/name",
+      "task": "parties",
+      "description": "组织完整名称",
+      "schema": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "minLength": 1,
+        "description": "组织完整名称"
+      },
+      "whenCategory": "法人、非法人组织"
+    },
+    {
+      "fieldId": "L055",
+      "path": "/blocks/parties/第三人/*/data/domicile",
+      "task": "parties",
+      "description": "住所地或主要办事机构所在地",
+      "schema": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "minLength": 1,
+        "description": "住所地或主要办事机构所在地"
+      },
+      "whenCategory": "法人、非法人组织"
+    },
+    {
+      "fieldId": "L056",
+      "path": "/blocks/parties/第三人/*/data/registrationPlace",
+      "task": "parties",
+      "description": "注册地或登记地，与住所地不互相补齐",
+      "schema": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "minLength": 1,
+        "description": "注册地或登记地，与住所地不互相补齐"
+      },
+      "whenCategory": "法人、非法人组织"
+    },
+    {
+      "fieldId": "L057",
+      "path": "/blocks/parties/第三人/*/data/legalRep",
+      "task": "parties",
+      "description": "法定代表人或主要负责人姓名，不能因此自动新增自然人当事人",
+      "schema": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "minLength": 1,
+        "description": "法定代表人或主要负责人姓名，不能因此自动新增自然人当事人"
+      },
+      "whenCategory": "法人、非法人组织"
+    },
+    {
+      "fieldId": "L058",
+      "path": "/blocks/parties/第三人/*/data/position",
+      "task": "parties",
+      "description": "法定代表人或主要负责人职务",
+      "schema": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "minLength": 1,
+        "description": "法定代表人或主要负责人职务"
+      },
+      "whenCategory": "法人、非法人组织"
+    },
+    {
+      "fieldId": "L059",
+      "path": "/blocks/parties/第三人/*/data/phone",
+      "task": "parties",
+      "description": "该组织的联系电话",
+      "schema": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "minLength": 1,
+        "description": "该组织的联系电话"
+      },
+      "whenCategory": "法人、非法人组织"
+    },
+    {
+      "fieldId": "L060",
+      "path": "/blocks/parties/第三人/*/data/creditCode",
+      "task": "parties",
+      "description": "统一社会信用代码，保留字符串",
+      "schema": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "minLength": 1,
+        "description": "统一社会信用代码，保留字符串"
+      },
+      "whenCategory": "法人、非法人组织"
+    },
+    {
+      "fieldId": "L061",
+      "path": "/blocks/parties/第三人/*/data/type/*",
+      "task": "parties",
+      "description": "按原文明示的类型和选项抽取；未知null；附加说明使用value/text。",
+      "schema": {
+        "type": "string",
+        "enum": [
+          "有限责任公司",
+          "股份有限公司",
+          "上市公司",
+          "其他企业法人",
+          "事业单位",
+          "社会团体",
+          "基金会",
+          "社会服务机构",
+          "机关法人",
+          "农村集体经济组织法人",
+          "城镇农村的合作经济组织法人",
+          "基层群众性自治组织法人",
+          "个人独资企业",
+          "合伙企业",
+          "不具有法人资格的专业服务机构"
+        ]
+      },
+      "whenCategory": "法人、非法人组织"
+    },
+    {
+      "fieldId": "L062",
+      "path": "/blocks/parties/第三人/*/data/ownership",
+      "task": "parties",
+      "description": "明确所有制选项；不能从公司名称推定",
+      "schema": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "minLength": 1,
+        "description": "明确所有制选项；不能从公司名称推定",
+        "enum": [
+          "国有",
+          "控股",
+          "参股",
+          "民营",
+          "其他",
+          null
+        ]
+      },
+      "whenCategory": "法人、非法人组织"
+    },
+    {
+      "fieldId": "L063",
+      "path": "/blocks/parties/第三人/*/data/extra/联系人",
+      "task": "parties",
+      "description": "该组织明确联系人信息；只保留此扩展键",
+      "schema": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "minLength": 1,
+        "description": "该组织明确联系人信息；只保留此扩展键"
+      },
+      "whenCategory": "法人、非法人组织"
+    },
+    {
+      "fieldId": "L064",
+      "path": "/blocks/parties/委托诉讼代理人/*/data/has",
+      "task": "parties",
+      "description": "明确有或无代理人，完全未提及时整个代理人列表null",
+      "schema": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "minLength": 1,
+        "description": "明确有或无代理人，完全未提及时整个代理人列表null",
+        "enum": [
+          "有",
+          "无",
+          null
+        ]
+      }
+    },
+    {
+      "fieldId": "L065",
+      "path": "/blocks/parties/委托诉讼代理人/*/data/name",
+      "task": "parties",
+      "description": "代理人本名",
+      "schema": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "minLength": 1,
+        "description": "代理人本名"
+      }
+    },
+    {
+      "fieldId": "L066",
+      "path": "/blocks/parties/委托诉讼代理人/*/data/unit",
+      "task": "parties",
+      "description": "代理人单位",
+      "schema": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "minLength": 1,
+        "description": "代理人单位"
+      }
+    },
+    {
+      "fieldId": "L067",
+      "path": "/blocks/parties/委托诉讼代理人/*/data/position",
+      "task": "parties",
+      "description": "代理人职务",
+      "schema": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "minLength": 1,
+        "description": "代理人职务"
+      }
+    },
+    {
+      "fieldId": "L068",
+      "path": "/blocks/parties/委托诉讼代理人/*/data/phone",
+      "task": "parties",
+      "description": "代理人联系电话",
+      "schema": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "minLength": 1,
+        "description": "代理人联系电话"
+      }
+    },
+    {
+      "fieldId": "L069",
+      "path": "/blocks/parties/委托诉讼代理人/*/data/tick/*",
+      "task": "parties",
+      "description": "按原文明示的类型和选项抽取；未知null；附加说明使用value/text。",
+      "schema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "enum": [
+              "一般授权",
+              "特别授权"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "value": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "minLength": 1,
+                "description": "明确选择的选项",
+                "enum": [
+                  "一般授权",
+                  "特别授权",
+                  null
+                ]
+              },
+              "text": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "minLength": 1,
+                "description": "原文明确附加说明；其他选项的文字追加在其他后面。"
+              }
+            },
+            "required": [
+              "value",
+              "text"
+            ],
+            "additionalProperties": false
+          }
+        ]
+      }
+    },
+    {
+      "fieldId": "L070",
+      "path": "/blocks/claims/narrative/*",
+      "task": "claims",
+      "description": "原文诉讼请求，按原有请求分行摘录",
+      "schema": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "minLength": 1,
+        "description": "原文诉讼请求，按原有请求分行摘录"
+      }
+    },
+    {
+      "fieldId": "L071",
+      "path": "/blocks/claims/1/截至日期",
+      "task": "claims",
+      "description": "主张尚欠本金的截至日期；只填明确完整日期，不补年月日。",
+      "schema": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "minLength": 1,
+        "description": "主张尚欠本金的截至日期；只填明确完整日期，不补年月日。",
+        "pattern": "^\\d{4}(?:年|-)\\d{1,2}(?:月|-)\\d{1,2}日?$"
+      }
+    },
+    {
+      "fieldId": "L072",
+      "path": "/blocks/claims/1/本金",
+      "task": "claims",
+      "description": "请求偿还的尚欠本金，区别于实际出借金额",
+      "schema": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "minLength": 1,
+        "description": "请求偿还的尚欠本金，区别于实际出借金额"
+      }
+    },
+    {
+      "fieldId": "L073",
+      "path": "/blocks/claims/2/截至日期",
+      "task": "claims",
+      "description": "主张利息的暂计截至日期；只填明确完整日期，不补年月日。",
+      "schema": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "minLength": 1,
+        "description": "主张利息的暂计截至日期；只填明确完整日期，不补年月日。",
+        "pattern": "^\\d{4}(?:年|-)\\d{1,2}(?:月|-)\\d{1,2}日?$"
+      }
+    },
+    {
+      "fieldId": "L074",
+      "path": "/blocks/claims/2/利息",
+      "task": "claims",
+      "description": "原文明示的利息金额，不能计算补齐",
+      "schema": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "minLength": 1,
+        "description": "原文明示的利息金额，不能计算补齐"
+      }
+    },
+    {
+      "fieldId": "L075",
+      "path": "/blocks/claims/2/计算方式",
+      "task": "claims",
+      "description": "原文利息请求的基数、利率、起止时间及计算规则，区别于合同利率约定",
+      "schema": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "minLength": 1,
+        "description": "原文利息请求的基数、利率、起止时间及计算规则，区别于合同利率约定"
+      }
+    },
+    {
+      "fieldId": "L076",
+      "path": "/blocks/claims/2/tick/*",
+      "task": "claims",
+      "description": "按原文明示的类型和选项抽取；未知null；附加说明使用value/text。",
+      "schema": {
+        "type": "string",
+        "enum": [
+          "是",
+          "否"
+        ]
+      }
+    },
+    {
+      "fieldId": "L077",
+      "path": "/blocks/claims/3",
+      "task": "claims",
+      "description": "是否要求提前还款或解除合同；按已确认范围只勾是或否",
+      "schema": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "minLength": 1,
+        "description": "是否要求提前还款或解除合同；按已确认范围只勾是或否",
+        "enum": [
+          "是",
+          "否",
+          null
+        ]
+      }
+    },
+    {
+      "fieldId": "L078",
+      "path": "/blocks/claims/4/value",
+      "task": "claims",
+      "description": "是否主张担保权利",
+      "schema": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "minLength": 1,
+        "description": "是否主张担保权利",
+        "enum": [
+          "是",
+          "否",
+          null
+        ]
+      }
+    },
+    {
+      "fieldId": "L079",
+      "path": "/blocks/claims/4/text",
+      "task": "claims",
+      "description": "该项原文明示的具体内容",
+      "schema": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "minLength": 1,
+        "description": "该项原文明示的具体内容"
+      }
+    },
+    {
+      "fieldId": "L080",
+      "path": "/blocks/claims/5/value",
+      "task": "claims",
+      "description": "是否主张实现债权的费用",
+      "schema": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "minLength": 1,
+        "description": "是否主张实现债权的费用",
+        "enum": [
+          "是",
+          "否",
+          null
+        ]
+      }
+    },
+    {
+      "fieldId": "L081",
+      "path": "/blocks/claims/5/text",
+      "task": "claims",
+      "description": "该项原文明示的具体内容",
+      "schema": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "minLength": 1,
+        "description": "该项原文明示的具体内容"
+      }
+    },
+    {
+      "fieldId": "L082",
+      "path": "/blocks/claims/6",
+      "task": "claims",
+      "description": "是否主张诉讼费用",
+      "schema": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "minLength": 1,
+        "description": "是否主张诉讼费用",
+        "enum": [
+          "是",
+          "否",
+          null
+        ]
+      }
+    },
+    {
+      "fieldId": "L083",
+      "path": "/blocks/claims/7",
+      "task": "claims",
+      "description": "明确的其他请求",
+      "schema": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "minLength": 1,
+        "description": "明确的其他请求"
+      }
+    },
+    {
+      "fieldId": "L084",
+      "path": "/blocks/claims/8",
+      "task": "claims",
+      "description": "原文明示的标的总额及包含关系，不能自行求和",
+      "schema": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "minLength": 1,
+        "description": "原文明示的标的总额及包含关系，不能自行求和"
+      }
+    },
+    {
+      "fieldId": "L085",
+      "path": "/blocks/jurisdiction/1/value",
+      "task": "remaining",
+      "description": "有无仲裁或法院管辖约定",
+      "schema": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "minLength": 1,
+        "description": "有无仲裁或法院管辖约定",
+        "enum": [
+          "有",
+          "无",
+          null
+        ]
+      }
+    },
+    {
+      "fieldId": "L086",
+      "path": "/blocks/jurisdiction/1/text",
+      "task": "remaining",
+      "description": "该项原文明示的具体内容",
+      "schema": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "minLength": 1,
+        "description": "该项原文明示的具体内容"
+      }
+    },
+    {
+      "fieldId": "L087",
+      "path": "/blocks/jurisdiction/2/保全法院",
+      "task": "remaining",
+      "description": "已发生诉前保全的法院",
+      "schema": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "minLength": 1,
+        "description": "已发生诉前保全的法院"
+      }
+    },
+    {
+      "fieldId": "L088",
+      "path": "/blocks/jurisdiction/2/保全时间",
+      "task": "remaining",
+      "description": "已发生诉前保全的时间；只填明确完整日期，不补年月日。",
+      "schema": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "minLength": 1,
+        "description": "已发生诉前保全的时间；只填明确完整日期，不补年月日。",
+        "pattern": "^\\d{4}(?:年|-)\\d{1,2}(?:月|-)\\d{1,2}日?$"
+      }
+    },
+    {
+      "fieldId": "L089",
+      "path": "/blocks/jurisdiction/2/保全案号",
+      "task": "remaining",
+      "description": "已发生诉前保全的案号",
+      "schema": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "minLength": 1,
+        "description": "已发生诉前保全的案号"
+      }
+    },
+    {
+      "fieldId": "L090",
+      "path": "/blocks/jurisdiction/2/tick/*",
+      "task": "remaining",
+      "description": "按原文明示的类型和选项抽取；未知null；附加说明使用value/text。",
+      "schema": {
+        "type": "string",
+        "enum": [
+          "是",
+          "否"
+        ]
+      }
+    },
+    {
+      "fieldId": "L091",
+      "path": "/blocks/facts/narrative",
+      "task": "loan_facts",
+      "description": "事实与理由独立正文，保持字符串；原文存在时直接摘录，不新增法条或事实",
+      "schema": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "minLength": 1,
+        "description": "事实与理由独立正文，保持字符串；原文存在时直接摘录，不新增法条或事实"
+      }
+    },
+    {
+      "fieldId": "L092",
+      "path": "/blocks/facts/1",
+      "task": "loan_facts",
+      "description": "合同或借条的签订情况，明确无书面合同时可填原话",
+      "schema": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "minLength": 1,
+        "description": "合同或借条的签订情况，明确无书面合同时可填原话"
+      }
+    },
+    {
+      "fieldId": "L093",
+      "path": "/blocks/facts/2/出借人",
+      "task": "loan_facts",
+      "description": "明确的出借主体，多个主体保留原文分隔",
+      "schema": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "minLength": 1,
+        "description": "明确的出借主体，多个主体保留原文分隔"
+      }
+    },
+    {
+      "fieldId": "L094",
+      "path": "/blocks/facts/2/借款人",
+      "task": "loan_facts",
+      "description": "明确的借款主体，不能从职务或关系推定",
+      "schema": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "minLength": 1,
+        "description": "明确的借款主体，不能从职务或关系推定"
+      }
+    },
+    {
+      "fieldId": "L095",
+      "path": "/blocks/facts/3/约定金额",
+      "task": "loan_facts",
+      "description": "原文明确约定的借款金额",
+      "schema": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "minLength": 1,
+        "description": "原文明确约定的借款金额"
+      }
+    },
+    {
+      "fieldId": "L096",
+      "path": "/blocks/facts/3/实际提供金额",
+      "task": "loan_facts",
+      "description": "原文明确实际交付的借款金额",
+      "schema": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "minLength": 1,
+        "description": "原文明确实际交付的借款金额"
+      }
+    },
+    {
+      "fieldId": "L097",
+      "path": "/blocks/facts/3/tick/*",
+      "task": "loan_facts",
+      "description": "按原文明示的类型和选项抽取；未知null；附加说明使用value/text。",
+      "schema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "enum": [
+              "现金",
+              "转账",
+              "其他"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "value": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "minLength": 1,
+                "description": "明确选择的选项",
+                "enum": [
+                  "现金",
+                  "转账",
+                  "其他",
+                  null
+                ]
+              },
+              "text": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "minLength": 1,
+                "description": "原文明确附加说明；其他选项的文字追加在其他后面。"
+              }
+            },
+            "required": [
+              "value",
+              "text"
+            ],
+            "additionalProperties": false
+          }
+        ]
+      }
+    },
+    {
+      "fieldId": "L098",
+      "path": "/blocks/facts/4/约定期限起",
+      "task": "loan_facts",
+      "description": "约定借款期限起日；只填明确完整日期，不补年月日。",
+      "schema": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "minLength": 1,
+        "description": "约定借款期限起日；只填明确完整日期，不补年月日。",
+        "pattern": "^\\d{4}(?:年|-)\\d{1,2}(?:月|-)\\d{1,2}日?$"
+      }
+    },
+    {
+      "fieldId": "L099",
+      "path": "/blocks/facts/4/约定期限止",
+      "task": "loan_facts",
+      "description": "约定借款期限止日；只填明确完整日期，不补年月日。",
+      "schema": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "minLength": 1,
+        "description": "约定借款期限止日；只填明确完整日期，不补年月日。",
+        "pattern": "^\\d{4}(?:年|-)\\d{1,2}(?:月|-)\\d{1,2}日?$"
+      }
+    },
+    {
+      "fieldId": "L100",
+      "path": "/blocks/facts/4/tick/*",
+      "task": "loan_facts",
+      "description": "按原文明示的类型和选项抽取；未知null；附加说明使用value/text。",
+      "schema": {
+        "type": "string",
+        "enum": [
+          "是",
+          "否"
+        ]
+      }
+    },
+    {
+      "fieldId": "L101",
+      "path": "/blocks/facts/5/利率",
+      "task": "loan_facts",
+      "description": "借款约定利率及年、季、月等周期，不能用诉请利率替代",
+      "schema": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "minLength": 1,
+        "description": "借款约定利率及年、季、月等周期，不能用诉请利率替代"
+      }
+    },
+    {
+      "fieldId": "L102",
+      "path": "/blocks/facts/5/利率条款",
+      "task": "loan_facts",
+      "description": "借款约定利率的合同条款或原文内容",
+      "schema": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "minLength": 1,
+        "description": "借款约定利率的合同条款或原文内容"
+      }
+    },
+    {
+      "fieldId": "L103",
+      "path": "/blocks/facts/5/tick/*",
+      "task": "loan_facts",
+      "description": "按原文明示的类型和选项抽取；未知null；附加说明使用value/text。",
+      "schema": {
+        "type": "string",
+        "enum": [
+          "是",
+          "否"
+        ]
+      }
+    },
+    {
+      "fieldId": "L104",
+      "path": "/blocks/facts/6/*/日期",
+      "task": "loan_facts",
+      "description": "实际提供该笔借款的日期；只填明确完整日期，不补年月日。",
+      "schema": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "minLength": 1,
+        "description": "实际提供该笔借款的日期；只填明确完整日期，不补年月日。",
+        "pattern": "^\\d{4}(?:年|-)\\d{1,2}(?:月|-)\\d{1,2}日?$"
+      }
+    },
+    {
+      "fieldId": "L105",
+      "path": "/blocks/facts/6/*/金额",
+      "task": "loan_facts",
+      "description": "该笔实际交付金额，逐笔保留，不合计",
+      "schema": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "minLength": 1,
+        "description": "该笔实际交付金额，逐笔保留，不合计"
+      }
+    },
+    {
+      "fieldId": "L106",
+      "path": "/blocks/facts/7/tick/*",
+      "task": "loan_facts",
+      "description": "按原文明示的类型和选项抽取；未知null；附加说明使用value/text。",
+      "schema": {
+        "oneOf": [
+          {
+            "type": "string",
+            "enum": [
+              "到期一次性还本付息",
+              "按月计息、到期一次性还本",
+              "按季计息、到期一次性还本",
+              "按年计息、到期一次性还本",
+              "其他"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "value": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "minLength": 1,
+                "description": "明确选择的选项",
+                "enum": [
+                  "到期一次性还本付息",
+                  "按月计息、到期一次性还本",
+                  "按季计息、到期一次性还本",
+                  "按年计息、到期一次性还本",
+                  "其他",
+                  null
+                ]
+              },
+              "text": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "minLength": 1,
+                "description": "原文明确附加说明；其他选项的文字追加在其他后面。"
+              }
+            },
+            "required": [
+              "value",
+              "text"
+            ],
+            "additionalProperties": false
+          }
+        ]
+      }
+    },
+    {
+      "fieldId": "L107",
+      "path": "/blocks/facts/8/已还本金",
+      "task": "loan_facts",
+      "description": "已归还的本金；明确未还本金才可记0",
+      "schema": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "minLength": 1,
+        "description": "已归还的本金；明确未还本金才可记0"
+      }
+    },
+    {
+      "fieldId": "L108",
+      "path": "/blocks/facts/8/已还利息",
+      "task": "loan_facts",
+      "description": "已归还的利息；未提及不等于0",
+      "schema": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "minLength": 1,
+        "description": "已归还的利息；未提及不等于0"
+      }
+    },
+    {
+      "fieldId": "L109",
+      "path": "/blocks/facts/8/还息至",
+      "task": "loan_facts",
+      "description": "原文明示已支付利息至何日，不用到期日替代；只填明确完整日期，不补年月日。",
+      "schema": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "minLength": 1,
+        "description": "原文明示已支付利息至何日，不用到期日替代；只填明确完整日期，不补年月日。",
+        "pattern": "^\\d{4}(?:年|-)\\d{1,2}(?:月|-)\\d{1,2}日?$"
+      }
+    },
+    {
+      "fieldId": "L110",
+      "path": "/blocks/facts/9/逾期时间",
+      "task": "loan_facts",
+      "description": "明确逾期起日，不根据利息起算日或期限自行计算；只填明确完整日期，不补年月日。",
+      "schema": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "minLength": 1,
+        "description": "明确逾期起日，不根据利息起算日或期限自行计算；只填明确完整日期，不补年月日。",
+        "pattern": "^\\d{4}(?:年|-)\\d{1,2}(?:月|-)\\d{1,2}日?$"
+      }
+    },
+    {
+      "fieldId": "L111",
+      "path": "/blocks/facts/9/tick/*",
+      "task": "loan_facts",
+      "description": "按原文明示的类型和选项抽取；未知null；附加说明使用value/text。",
+      "schema": {
+        "type": "string",
+        "enum": [
+          "是",
+          "否"
+        ]
+      }
+    },
+    {
+      "fieldId": "L112",
+      "path": "/blocks/facts/10/签订时间",
+      "task": "security_facts",
+      "description": "物的担保合同签订日期；只填明确完整日期，不补年月日。",
+      "schema": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "minLength": 1,
+        "description": "物的担保合同签订日期；只填明确完整日期，不补年月日。",
+        "pattern": "^\\d{4}(?:年|-)\\d{1,2}(?:月|-)\\d{1,2}日?$"
+      }
+    },
+    {
+      "fieldId": "L113",
+      "path": "/blocks/facts/10/tick/*",
+      "task": "security_facts",
+      "description": "按原文明示的类型和选项抽取；未知null；附加说明使用value/text。",
+      "schema": {
+        "type": "string",
+        "enum": [
+          "是",
+          "否"
+        ]
+      }
+    },
+    {
+      "fieldId": "L114",
+      "path": "/blocks/facts/11/担保人",
+      "task": "security_facts",
+      "description": "明确提供物的担保的主体",
+      "schema": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "minLength": 1,
+        "description": "明确提供物的担保的主体"
+      }
+    },
+    {
+      "fieldId": "L115",
+      "path": "/blocks/facts/11/担保物",
+      "task": "security_facts",
+      "description": "明确抵押或质押的财产",
+      "schema": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "minLength": 1,
+        "description": "明确抵押或质押的财产"
+      }
+    },
+    {
+      "fieldId": "L116",
+      "path": "/blocks/facts/12",
+      "task": "security_facts",
+      "description": "是否最高额抵押或质押，按已确认范围只勾是或否",
+      "schema": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "minLength": 1,
+        "description": "是否最高额抵押或质押，按已确认范围只勾是或否",
+        "enum": [
+          "是",
+          "否",
+          null
+        ]
+      }
+    },
+    {
+      "fieldId": "L117",
+      "path": "/blocks/facts/13/tick/*",
+      "task": "security_facts",
+      "description": "按原文明示的类型和选项抽取；未知null；附加说明使用value/text。",
+      "schema": {
+        "type": "string",
+        "enum": [
+          "是",
+          "正式登记",
+          "预告登记",
+          "否"
+        ]
+      }
+    },
+    {
+      "fieldId": "L118",
+      "path": "/blocks/facts/14/签订时间",
+      "task": "security_facts",
+      "description": "保证合同签订日期；只填明确完整日期，不补年月日。",
+      "schema": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "minLength": 1,
+        "description": "保证合同签订日期；只填明确完整日期，不补年月日。",
+        "pattern": "^\\d{4}(?:年|-)\\d{1,2}(?:月|-)\\d{1,2}日?$"
+      }
+    },
+    {
+      "fieldId": "L119",
+      "path": "/blocks/facts/14/保证人",
+      "task": "security_facts",
+      "description": "明确保证人，不能自动设为被告或第三人",
+      "schema": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "minLength": 1,
+        "description": "明确保证人，不能自动设为被告或第三人"
+      }
+    },
+    {
+      "fieldId": "L120",
+      "path": "/blocks/facts/14/主要内容",
+      "task": "security_facts",
+      "description": "保证合同明确内容",
+      "schema": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "minLength": 1,
+        "description": "保证合同明确内容"
+      }
+    },
+    {
+      "fieldId": "L121",
+      "path": "/blocks/facts/14/tick/*",
+      "task": "security_facts",
+      "description": "按原文明示的类型和选项抽取；未知null；附加说明使用value/text。",
+      "schema": {
+        "type": "string",
+        "enum": [
+          "是",
+          "否",
+          "一般保证",
+          "连带责任保证"
+        ]
+      }
+    },
+    {
+      "fieldId": "L122",
+      "path": "/blocks/facts/15",
+      "task": "security_facts",
+      "description": "是否有其他担保方式，按已确认范围只勾是或否",
+      "schema": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "minLength": 1,
+        "description": "是否有其他担保方式，按已确认范围只勾是或否",
+        "enum": [
+          "是",
+          "否",
+          null
+        ]
+      }
+    },
+    {
+      "fieldId": "L123",
+      "path": "/blocks/facts/16",
+      "task": "remaining",
+      "description": "其他需要说明的事实",
+      "schema": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "minLength": 1,
+        "description": "其他需要说明的事实"
+      }
+    },
+    {
+      "fieldId": "L124",
+      "path": "/blocks/facts/17/合同约定",
+      "task": "remaining",
+      "description": "原文明示的请求所依据的合同约定",
+      "schema": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "minLength": 1,
+        "description": "原文明示的请求所依据的合同约定"
+      }
+    },
+    {
+      "fieldId": "L125",
+      "path": "/blocks/facts/17/法律规定",
+      "task": "remaining",
+      "description": "原文明示的法条和法律依据，不能生成补充",
+      "schema": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "minLength": 1,
+        "description": "原文明示的法条和法律依据，不能生成补充"
+      }
+    },
+    {
+      "fieldId": "L126",
+      "path": "/blocks/facts/18",
+      "task": "remaining",
+      "description": "原文证据清单，字符串中可用换行，不新增证据",
+      "schema": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "minLength": 1,
+        "description": "原文证据清单，字符串中可用换行，不新增证据"
+      }
+    },
+    {
+      "fieldId": "L127",
+      "path": "/blocks/mediation/1",
+      "task": "remaining",
+      "description": "总体了解程度；固定告知内容不代表本人选择。",
+      "schema": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "enum": [
+          "了解",
+          "不了解",
+          null
+        ],
+        "description": "总体了解程度；固定告知内容不代表本人选择。"
+      }
+    },
+    {
+      "fieldId": "L128",
+      "path": "/blocks/mediation/2/*",
+      "task": "remaining",
+      "description": "本槽位独立选择；未知null。",
+      "schema": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "enum": [
+          "了解",
+          "不了解",
+          null
+        ],
+        "description": "本槽位独立选择；未知null。"
+      }
+    },
+    {
+      "fieldId": "L129",
+      "path": "/blocks/mediation/3",
+      "task": "remaining",
+      "description": "明确调解意愿；不从了解推愿意。",
+      "schema": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "enum": [
+          "是",
+          "否",
+          "暂不确定，想要了解更多内容",
+          null
+        ],
+        "description": "明确调解意愿；不从了解推愿意。"
+      }
+    },
+    {
+      "fieldId": "L130",
+      "path": "/blocks/signature/signer",
+      "task": "remaining",
+      "description": "落款具状人，只有正文原告信息时不自动代签",
+      "schema": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "minLength": 1,
+        "description": "落款具状人，只有正文原告信息时不自动代签"
+      }
+    },
+    {
+      "fieldId": "L131",
+      "path": "/blocks/signature/legalRep",
+      "task": "remaining",
+      "description": "落款法定代表人，需落款有明确表达",
+      "schema": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "minLength": 1,
+        "description": "落款法定代表人，需落款有明确表达"
+      }
+    },
+    {
+      "fieldId": "L132",
+      "path": "/blocks/signature/date",
+      "task": "remaining",
+      "description": "原文落款日期，不补今天或其他事件日期；只填明确完整日期，不补年月日。",
+      "schema": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "minLength": 1,
+        "description": "原文落款日期，不补今天或其他事件日期；只填明确完整日期，不补年月日。",
+        "pattern": "^\\d{4}(?:年|-)\\d{1,2}(?:月|-)\\d{1,2}日?$"
+      }
+    }
+  ]
+}

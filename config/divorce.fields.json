@@ -957,14 +957,14 @@
       "fieldId": "D063",
       "path": "/blocks/facts/1/离婚事由",
       "task": "facts",
-      "description": "原文明示离婚事由，保留陈述主体，不把指控变成已证实事实。",
+      "description": "原文明示离婚事由，保留陈述主体，指控也可作为事实。",
       "schema": {
         "type": [
           "string",
           "null"
         ],
         "minLength": 1,
-        "description": "原文明示离婚事由，保留陈述主体，不把指控变成已证实事实。"
+        "description": "原文明示离婚事由，保留陈述主体，指控也可作为事实。"
       }
     },
     {

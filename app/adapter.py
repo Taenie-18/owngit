@@ -57,46 +57,58 @@ class QwenAdapter:
         url = self.config.base_url.rstrip('/')
         if not url.endswith('/chat/completions'):
             url += '/chat/completions'
-        http_req = request.Request(url, data=json.dumps(self.payload(req), ensure_ascii=False).encode('utf-8'),
+        payload = self.payload(req)
+        http_req = request.Request(url, data=json.dumps(payload, ensure_ascii=False).encode('utf-8'),
             headers={'Content-Type':'application/json', 'Authorization':f'Bearer {self.config.api_key}'})
+        diagnostics = {'model': self.config.model, 'maxTokens': payload['max_tokens'],
+                       'finishReason': None, 'promptTokens': None, 'completionTokens': None,
+                       'totalTokens': None, 'providerStatus': None}
         start = time.monotonic()
         try:
             with request.urlopen(http_req, timeout=self.config.timeout_s) as response:
+                diagnostics['providerStatus'] = getattr(response, 'status', 200)
                 body = response.read()
-        except error.HTTPError as exc:
-            # 只保留可操作的错误类别，不向调用方回显供应商正文或密钥。
-            code = exc.code
-            raise ExtractionError('MODEL_RATE_LIMIT' if code == 429 else 'MODEL_AUTH' if code in (401,403) else 'MODEL_HTTP',
-                '模型接口调用失败', status=504 if code == 408 else 502,
-                retryable=code in (408,429) or code >= 500) from None
-        except (socket.timeout, TimeoutError):
-            raise ExtractionError('MODEL_TIMEOUT', '模型请求超时', status=504, retryable=True) from None
-        except error.URLError as exc:
-            timeout = isinstance(exc.reason, (socket.timeout, TimeoutError))
-            raise ExtractionError('MODEL_TIMEOUT' if timeout else 'MODEL_NETWORK', '模型连接失败',
-                                  status=504 if timeout else 502, retryable=True) from None
-        except OSError:
-            raise ExtractionError('MODEL_NETWORK', '模型连接失败', status=502, retryable=True) from None
-        # 先检查模型是否正常结束，再解析业务JSON，防止截断输出冒充成功。
-        try:
             raw = json.loads(body.decode('utf-8'))
             choice = raw['choices'][0]
             finish = choice.get('finish_reason')
+            usage = raw.get('usage') or {}
+            if not isinstance(usage, dict):
+                usage = {}
+            # 先保留允许的诊断字段，再判断是否截断，失败时同样能追查用量。
+            for source, target in (('prompt_tokens', 'promptTokens'),
+                                   ('completion_tokens', 'completionTokens'), ('total_tokens', 'totalTokens')):
+                value = usage.get(source)
+                diagnostics[target] = value if type(value) is int and value >= 0 else None
+            diagnostics['finishReason'] = finish if isinstance(finish, str) and len(finish) <= 64 else None
             if finish != 'stop':
                 raise ExtractionError('MODEL_INCOMPLETE', '模型输出未正常完成', status=502, retryable=True)
             parsed = json.loads(choice['message']['content'])
             if not isinstance(parsed, dict):
                 raise ValueError()
-            usage = raw.get('usage') or {}
-            if not isinstance(usage, dict):
-                usage = {}
             return ModelResponse(parsed, str(raw.get('model') or self.config.model),
                 {k:v for k,v in usage.items() if isinstance(v,int) and not isinstance(v,bool)},
-                int((time.monotonic()-start)*1000),finish)
-        except ExtractionError:
-            raise
-        except (ValueError,KeyError,IndexError,TypeError,UnicodeDecodeError):
-            raise ExtractionError('MODEL_INVALID_JSON', '模型返回的JSON结构无效', status=502, retryable=True) from None
+                int((time.monotonic()-start)*1000), finish)
+        except error.HTTPError as exc:
+            # 只保留可操作的错误类别，不向调用方回显供应商正文或密钥。
+            code = exc.code
+            diagnostics['providerStatus'] = code
+            failure = ExtractionError('MODEL_RATE_LIMIT' if code == 429 else 'MODEL_AUTH' if code in (401,403) else 'MODEL_HTTP',
+                '模型接口调用失败', status=504 if code == 408 else 502,
+                retryable=code in (408,429) or code >= 500)
+        except (socket.timeout, TimeoutError):
+            failure = ExtractionError('MODEL_TIMEOUT', '模型请求超时', status=504, retryable=True)
+        except error.URLError as exc:
+            timeout = isinstance(exc.reason, (socket.timeout, TimeoutError))
+            failure = ExtractionError('MODEL_TIMEOUT' if timeout else 'MODEL_NETWORK', '模型连接失败',
+                                      status=504 if timeout else 502, retryable=True)
+        except OSError:
+            failure = ExtractionError('MODEL_NETWORK', '模型连接失败', status=502, retryable=True)
+        except ExtractionError as exc:
+            failure = exc
+        except (ValueError, KeyError, IndexError, TypeError, AttributeError, UnicodeDecodeError):
+            failure = ExtractionError('MODEL_INVALID_JSON', '模型返回的JSON结构无效', status=502, retryable=True)
+        failure.diagnostics = diagnostics
+        raise failure from None
 
 
 class MockAdapter:

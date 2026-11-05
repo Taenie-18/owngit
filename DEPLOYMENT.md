@@ -1,3 +1,5 @@
+> 本文为早期通用部署方案。当前实际部署使用本地ZIP上传、/vdb1路径和现有Conda base环境，请按 [STAGING_DEPLOYMENT.md](STAGING_DEPLOYMENT.md) 进行本次独立验证。
+
 # Linux测试服务器部署说明
 
 本说明对应当前同步JSON抽取版本，采用Git拉取、Python虚拟环境和systemd运行。仅准备部署材料，不代表已在Linux或远程服务器完成验证。

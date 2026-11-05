@@ -1,0 +1,2044 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:private-lending:1.0.0",
+  "type": "object",
+  "properties": {
+    "docType": {
+      "const": "private-lending"
+    },
+    "blocks": {
+      "type": "object",
+      "properties": {
+        "parties": {
+          "type": "object",
+          "properties": {
+            "原告": {
+              "type": [
+                "array",
+                "null"
+              ],
+              "items": {
+                "oneOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "category": {
+                        "const": "自然人"
+                      },
+                      "data": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": [
+                              "string",
+                              "null"
+                            ],
+                            "minLength": 1,
+                            "description": "本名；只依据明确诉讼角色，不从法定代表人、联系人或担保关系推定为当事人。"
+                          },
+                          "gender": {
+                            "type": [
+                              "string",
+                              "null"
+                            ],
+                            "enum": [
+                              "男",
+                              "女",
+                              null
+                            ],
+                            "description": "只依据明示性别或可靠勾选，不从证件号码推导。"
+                          },
+                          "birth": {
+                            "type": [
+                              "string",
+                              "null"
+                            ],
+                            "minLength": 1,
+                            "description": "出生日期，不从身份证推导；只填明确完整日期，不补年月日。",
+                            "pattern": "^\\d{4}(?:年|-)\\d{1,2}(?:月|-)\\d{1,2}日?$"
+                          },
+                          "ethnicity": {
+                            "type": [
+                              "string",
+                              "null"
+                            ],
+                            "minLength": 1,
+                            "description": "明确民族。"
+                          },
+                          "workUnit": {
+                            "type": [
+                              "string",
+                              "null"
+                            ],
+                            "minLength": 1,
+                            "description": "当前自然人的工作单位。"
+                          },
+                          "position": {
+                            "type": [
+                              "string",
+                              "null"
+                            ],
+                            "minLength": 1,
+                            "description": "当前自然人的职务。"
+                          },
+                          "phone": {
+                            "type": [
+                              "string",
+                              "null"
+                            ],
+                            "minLength": 1,
+                            "description": "电话号码保留字符串；多个号码保留原有分隔和顺序。"
+                          },
+                          "domicile": {
+                            "type": [
+                              "string",
+                              "null"
+                            ],
+                            "minLength": 1,
+                            "description": "住所地或户籍所在地，不等于经常居住地，不相互补齐。"
+                          },
+                          "residence": {
+                            "type": [
+                              "string",
+                              "null"
+                            ],
+                            "minLength": 1,
+                            "description": "经常居住地，不能用住所地补齐。"
+                          },
+                          "idType": {
+                            "type": [
+                              "string",
+                              "null"
+                            ],
+                            "minLength": 1,
+                            "description": "原文证件类型，不从号码自动补齐。"
+                          },
+                          "idNumber": {
+                            "type": [
+                              "string",
+                              "null"
+                            ],
+                            "minLength": 1,
+                            "description": "证件号码原样保留，不能转数值。"
+                          }
+                        },
+                        "required": [
+                          "name",
+                          "gender",
+                          "birth",
+                          "ethnicity",
+                          "workUnit",
+                          "position",
+                          "phone",
+                          "domicile",
+                          "residence",
+                          "idType",
+                          "idNumber"
+                        ],
+                        "additionalProperties": false,
+                        "description": ""
+                      }
+                    },
+                    "required": [
+                      "category",
+                      "data"
+                    ],
+                    "additionalProperties": false,
+                    "description": ""
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "category": {
+                        "const": "法人、非法人组织"
+                      },
+                      "data": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": [
+                              "string",
+                              "null"
+                            ],
+                            "minLength": 1,
+                            "description": "组织完整名称"
+                          },
+                          "domicile": {
+                            "type": [
+                              "string",
+                              "null"
+                            ],
+                            "minLength": 1,
+                            "description": "住所地或主要办事机构所在地"
+                          },
+                          "registrationPlace": {
+                            "type": [
+                              "string",
+                              "null"
+                            ],
+                            "minLength": 1,
+                            "description": "注册地或登记地，与住所地不互相补齐"
+                          },
+                          "legalRep": {
+                            "type": [
+                              "string",
+                              "null"
+                            ],
+                            "minLength": 1,
+                            "description": "法定代表人或主要负责人姓名，不能因此自动新增自然人当事人"
+                          },
+                          "position": {
+                            "type": [
+                              "string",
+                              "null"
+                            ],
+                            "minLength": 1,
+                            "description": "法定代表人或主要负责人职务"
+                          },
+                          "phone": {
+                            "type": [
+                              "string",
+                              "null"
+                            ],
+                            "minLength": 1,
+                            "description": "该组织的联系电话"
+                          },
+                          "creditCode": {
+                            "type": [
+                              "string",
+                              "null"
+                            ],
+                            "minLength": 1,
+                            "description": "统一社会信用代码，保留字符串"
+                          },
+                          "type": {
+                            "type": [
+                              "array",
+                              "null"
+                            ],
+                            "items": {
+                              "type": "string",
+                              "enum": [
+                                "有限责任公司",
+                                "股份有限公司",
+                                "上市公司",
+                                "其他企业法人",
+                                "事业单位",
+                                "社会团体",
+                                "基金会",
+                                "社会服务机构",
+                                "机关法人",
+                                "农村集体经济组织法人",
+                                "城镇农村的合作经济组织法人",
+                                "基层群众性自治组织法人",
+                                "个人独资企业",
+                                "合伙企业",
+                                "不具有法人资格的专业服务机构"
+                              ]
+                            },
+                            "minItems": 1,
+                            "description": "原文或可靠勾选明确的组织类型"
+                          },
+                          "ownership": {
+                            "type": [
+                              "string",
+                              "null"
+                            ],
+                            "minLength": 1,
+                            "description": "明确所有制选项；不能从公司名称推定",
+                            "enum": [
+                              "国有",
+                              "控股",
+                              "参股",
+                              "民营",
+                              "其他",
+                              null
+                            ]
+                          },
+                          "extra": {
+                            "type": "object",
+                            "properties": {
+                              "联系人": {
+                                "type": [
+                                  "string",
+                                  "null"
+                                ],
+                                "minLength": 1,
+                                "description": "该组织明确联系人信息；只保留此扩展键"
+                              }
+                            },
+                            "required": [
+                              "联系人"
+                            ],
+                            "additionalProperties": false
+                          }
+                        },
+                        "required": [
+                          "name",
+                          "domicile",
+                          "registrationPlace",
+                          "legalRep",
+                          "position",
+                          "phone",
+                          "creditCode",
+                          "type",
+                          "ownership",
+                          "extra"
+                        ],
+                        "additionalProperties": false
+                      }
+                    },
+                    "required": [
+                      "category",
+                      "data"
+                    ],
+                    "additionalProperties": false
+                  }
+                ]
+              },
+              "minItems": 1,
+              "description": "仅列原文明示为本角色的实际当事人，未知列表null"
+            },
+            "被告": {
+              "type": [
+                "array",
+                "null"
+              ],
+              "items": {
+                "oneOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "category": {
+                        "const": "自然人"
+                      },
+                      "data": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": [
+                              "string",
+                              "null"
+                            ],
+                            "minLength": 1,
+                            "description": "本名；只依据明确诉讼角色，不从法定代表人、联系人或担保关系推定为当事人。"
+                          },
+                          "gender": {
+                            "type": [
+                              "string",
+                              "null"
+                            ],
+                            "enum": [
+                              "男",
+                              "女",
+                              null
+                            ],
+                            "description": "只依据明示性别或可靠勾选，不从证件号码推导。"
+                          },
+                          "birth": {
+                            "type": [
+                              "string",
+                              "null"
+                            ],
+                            "minLength": 1,
+                            "description": "出生日期，不从身份证推导；只填明确完整日期，不补年月日。",
+                            "pattern": "^\\d{4}(?:年|-)\\d{1,2}(?:月|-)\\d{1,2}日?$"
+                          },
+                          "ethnicity": {
+                            "type": [
+                              "string",
+                              "null"
+                            ],
+                            "minLength": 1,
+                            "description": "明确民族。"
+                          },
+                          "workUnit": {
+                            "type": [
+                              "string",
+                              "null"
+                            ],
+                            "minLength": 1,
+                            "description": "当前自然人的工作单位。"
+                          },
+                          "position": {
+                            "type": [
+                              "string",
+                              "null"
+                            ],
+                            "minLength": 1,
+                            "description": "当前自然人的职务。"
+                          },
+                          "phone": {
+                            "type": [
+                              "string",
+                              "null"
+                            ],
+                            "minLength": 1,
+                            "description": "电话号码保留字符串；多个号码保留原有分隔和顺序。"
+                          },
+                          "domicile": {
+                            "type": [
+                              "string",
+                              "null"
+                            ],
+                            "minLength": 1,
+                            "description": "住所地或户籍所在地，不等于经常居住地，不相互补齐。"
+                          },
+                          "residence": {
+                            "type": [
+                              "string",
+                              "null"
+                            ],
+                            "minLength": 1,
+                            "description": "经常居住地，不能用住所地补齐。"
+                          },
+                          "idType": {
+                            "type": [
+                              "string",
+                              "null"
+                            ],
+                            "minLength": 1,
+                            "description": "原文证件类型，不从号码自动补齐。"
+                          },
+                          "idNumber": {
+                            "type": [
+                              "string",
+                              "null"
+                            ],
+                            "minLength": 1,
+                            "description": "证件号码原样保留，不能转数值。"
+                          }
+                        },
+                        "required": [
+                          "name",
+                          "gender",
+                          "birth",
+                          "ethnicity",
+                          "workUnit",
+                          "position",
+                          "phone",
+                          "domicile",
+                          "residence",
+                          "idType",
+                          "idNumber"
+                        ],
+                        "additionalProperties": false,
+                        "description": ""
+                      }
+                    },
+                    "required": [
+                      "category",
+                      "data"
+                    ],
+                    "additionalProperties": false,
+                    "description": ""
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "category": {
+                        "const": "法人、非法人组织"
+                      },
+                      "data": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": [
+                              "string",
+                              "null"
+                            ],
+                            "minLength": 1,
+                            "description": "组织完整名称"
+                          },
+                          "domicile": {
+                            "type": [
+                              "string",
+                              "null"
+                            ],
+                            "minLength": 1,
+                            "description": "住所地或主要办事机构所在地"
+                          },
+                          "registrationPlace": {
+                            "type": [
+                              "string",
+                              "null"
+                            ],
+                            "minLength": 1,
+                            "description": "注册地或登记地，与住所地不互相补齐"
+                          },
+                          "legalRep": {
+                            "type": [
+                              "string",
+                              "null"
+                            ],
+                            "minLength": 1,
+                            "description": "法定代表人或主要负责人姓名，不能因此自动新增自然人当事人"
+                          },
+                          "position": {
+                            "type": [
+                              "string",
+                              "null"
+                            ],
+                            "minLength": 1,
+                            "description": "法定代表人或主要负责人职务"
+                          },
+                          "phone": {
+                            "type": [
+                              "string",
+                              "null"
+                            ],
+                            "minLength": 1,
+                            "description": "该组织的联系电话"
+                          },
+                          "creditCode": {
+                            "type": [
+                              "string",
+                              "null"
+                            ],
+                            "minLength": 1,
+                            "description": "统一社会信用代码，保留字符串"
+                          },
+                          "type": {
+                            "type": [
+                              "array",
+                              "null"
+                            ],
+                            "items": {
+                              "type": "string",
+                              "enum": [
+                                "有限责任公司",
+                                "股份有限公司",
+                                "上市公司",
+                                "其他企业法人",
+                                "事业单位",
+                                "社会团体",
+                                "基金会",
+                                "社会服务机构",
+                                "机关法人",
+                                "农村集体经济组织法人",
+                                "城镇农村的合作经济组织法人",
+                                "基层群众性自治组织法人",
+                                "个人独资企业",
+                                "合伙企业",
+                                "不具有法人资格的专业服务机构"
+                              ]
+                            },
+                            "minItems": 1,
+                            "description": "原文或可靠勾选明确的组织类型"
+                          },
+                          "ownership": {
+                            "type": [
+                              "string",
+                              "null"
+                            ],
+                            "minLength": 1,
+                            "description": "明确所有制选项；不能从公司名称推定",
+                            "enum": [
+                              "国有",
+                              "控股",
+                              "参股",
+                              "民营",
+                              "其他",
+                              null
+                            ]
+                          },
+                          "extra": {
+                            "type": "object",
+                            "properties": {
+                              "联系人": {
+                                "type": [
+                                  "string",
+                                  "null"
+                                ],
+                                "minLength": 1,
+                                "description": "该组织明确联系人信息；只保留此扩展键"
+                              }
+                            },
+                            "required": [
+                              "联系人"
+                            ],
+                            "additionalProperties": false
+                          }
+                        },
+                        "required": [
+                          "name",
+                          "domicile",
+                          "registrationPlace",
+                          "legalRep",
+                          "position",
+                          "phone",
+                          "creditCode",
+                          "type",
+                          "ownership",
+                          "extra"
+                        ],
+                        "additionalProperties": false
+                      }
+                    },
+                    "required": [
+                      "category",
+                      "data"
+                    ],
+                    "additionalProperties": false
+                  }
+                ]
+              },
+              "minItems": 1,
+              "description": "仅列原文明示为本角色的实际当事人，未知列表null"
+            },
+            "第三人": {
+              "type": [
+                "array",
+                "null"
+              ],
+              "items": {
+                "oneOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "category": {
+                        "const": "自然人"
+                      },
+                      "data": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": [
+                              "string",
+                              "null"
+                            ],
+                            "minLength": 1,
+                            "description": "本名；只依据明确诉讼角色，不从法定代表人、联系人或担保关系推定为当事人。"
+                          },
+                          "gender": {
+                            "type": [
+                              "string",
+                              "null"
+                            ],
+                            "enum": [
+                              "男",
+                              "女",
+                              null
+                            ],
+                            "description": "只依据明示性别或可靠勾选，不从证件号码推导。"
+                          },
+                          "birth": {
+                            "type": [
+                              "string",
+                              "null"
+                            ],
+                            "minLength": 1,
+                            "description": "出生日期，不从身份证推导；只填明确完整日期，不补年月日。",
+                            "pattern": "^\\d{4}(?:年|-)\\d{1,2}(?:月|-)\\d{1,2}日?$"
+                          },
+                          "ethnicity": {
+                            "type": [
+                              "string",
+                              "null"
+                            ],
+                            "minLength": 1,
+                            "description": "明确民族。"
+                          },
+                          "workUnit": {
+                            "type": [
+                              "string",
+                              "null"
+                            ],
+                            "minLength": 1,
+                            "description": "当前自然人的工作单位。"
+                          },
+                          "position": {
+                            "type": [
+                              "string",
+                              "null"
+                            ],
+                            "minLength": 1,
+                            "description": "当前自然人的职务。"
+                          },
+                          "phone": {
+                            "type": [
+                              "string",
+                              "null"
+                            ],
+                            "minLength": 1,
+                            "description": "电话号码保留字符串；多个号码保留原有分隔和顺序。"
+                          },
+                          "domicile": {
+                            "type": [
+                              "string",
+                              "null"
+                            ],
+                            "minLength": 1,
+                            "description": "住所地或户籍所在地，不等于经常居住地，不相互补齐。"
+                          },
+                          "residence": {
+                            "type": [
+                              "string",
+                              "null"
+                            ],
+                            "minLength": 1,
+                            "description": "经常居住地，不能用住所地补齐。"
+                          },
+                          "idType": {
+                            "type": [
+                              "string",
+                              "null"
+                            ],
+                            "minLength": 1,
+                            "description": "原文证件类型，不从号码自动补齐。"
+                          },
+                          "idNumber": {
+                            "type": [
+                              "string",
+                              "null"
+                            ],
+                            "minLength": 1,
+                            "description": "证件号码原样保留，不能转数值。"
+                          }
+                        },
+                        "required": [
+                          "name",
+                          "gender",
+                          "birth",
+                          "ethnicity",
+                          "workUnit",
+                          "position",
+                          "phone",
+                          "domicile",
+                          "residence",
+                          "idType",
+                          "idNumber"
+                        ],
+                        "additionalProperties": false,
+                        "description": ""
+                      }
+                    },
+                    "required": [
+                      "category",
+                      "data"
+                    ],
+                    "additionalProperties": false,
+                    "description": ""
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "category": {
+                        "const": "法人、非法人组织"
+                      },
+                      "data": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": [
+                              "string",
+                              "null"
+                            ],
+                            "minLength": 1,
+                            "description": "组织完整名称"
+                          },
+                          "domicile": {
+                            "type": [
+                              "string",
+                              "null"
+                            ],
+                            "minLength": 1,
+                            "description": "住所地或主要办事机构所在地"
+                          },
+                          "registrationPlace": {
+                            "type": [
+                              "string",
+                              "null"
+                            ],
+                            "minLength": 1,
+                            "description": "注册地或登记地，与住所地不互相补齐"
+                          },
+                          "legalRep": {
+                            "type": [
+                              "string",
+                              "null"
+                            ],
+                            "minLength": 1,
+                            "description": "法定代表人或主要负责人姓名，不能因此自动新增自然人当事人"
+                          },
+                          "position": {
+                            "type": [
+                              "string",
+                              "null"
+                            ],
+                            "minLength": 1,
+                            "description": "法定代表人或主要负责人职务"
+                          },
+                          "phone": {
+                            "type": [
+                              "string",
+                              "null"
+                            ],
+                            "minLength": 1,
+                            "description": "该组织的联系电话"
+                          },
+                          "creditCode": {
+                            "type": [
+                              "string",
+                              "null"
+                            ],
+                            "minLength": 1,
+                            "description": "统一社会信用代码，保留字符串"
+                          },
+                          "type": {
+                            "type": [
+                              "array",
+                              "null"
+                            ],
+                            "items": {
+                              "type": "string",
+                              "enum": [
+                                "有限责任公司",
+                                "股份有限公司",
+                                "上市公司",
+                                "其他企业法人",
+                                "事业单位",
+                                "社会团体",
+                                "基金会",
+                                "社会服务机构",
+                                "机关法人",
+                                "农村集体经济组织法人",
+                                "城镇农村的合作经济组织法人",
+                                "基层群众性自治组织法人",
+                                "个人独资企业",
+                                "合伙企业",
+                                "不具有法人资格的专业服务机构"
+                              ]
+                            },
+                            "minItems": 1,
+                            "description": "原文或可靠勾选明确的组织类型"
+                          },
+                          "ownership": {
+                            "type": [
+                              "string",
+                              "null"
+                            ],
+                            "minLength": 1,
+                            "description": "明确所有制选项；不能从公司名称推定",
+                            "enum": [
+                              "国有",
+                              "控股",
+                              "参股",
+                              "民营",
+                              "其他",
+                              null
+                            ]
+                          },
+                          "extra": {
+                            "type": "object",
+                            "properties": {
+                              "联系人": {
+                                "type": [
+                                  "string",
+                                  "null"
+                                ],
+                                "minLength": 1,
+                                "description": "该组织明确联系人信息；只保留此扩展键"
+                              }
+                            },
+                            "required": [
+                              "联系人"
+                            ],
+                            "additionalProperties": false
+                          }
+                        },
+                        "required": [
+                          "name",
+                          "domicile",
+                          "registrationPlace",
+                          "legalRep",
+                          "position",
+                          "phone",
+                          "creditCode",
+                          "type",
+                          "ownership",
+                          "extra"
+                        ],
+                        "additionalProperties": false
+                      }
+                    },
+                    "required": [
+                      "category",
+                      "data"
+                    ],
+                    "additionalProperties": false
+                  }
+                ]
+              },
+              "minItems": 1,
+              "description": "仅列原文明示为本角色的实际当事人，未知列表null"
+            },
+            "委托诉讼代理人": {
+              "type": [
+                "array",
+                "null"
+              ],
+              "items": {
+                "type": "object",
+                "properties": {
+                  "category": {
+                    "const": "代理人"
+                  },
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "has": {
+                        "type": [
+                          "string",
+                          "null"
+                        ],
+                        "minLength": 1,
+                        "description": "明确有或无代理人，完全未提及时整个代理人列表null",
+                        "enum": [
+                          "有",
+                          "无",
+                          null
+                        ]
+                      },
+                      "name": {
+                        "type": [
+                          "string",
+                          "null"
+                        ],
+                        "minLength": 1,
+                        "description": "代理人本名"
+                      },
+                      "unit": {
+                        "type": [
+                          "string",
+                          "null"
+                        ],
+                        "minLength": 1,
+                        "description": "代理人单位"
+                      },
+                      "position": {
+                        "type": [
+                          "string",
+                          "null"
+                        ],
+                        "minLength": 1,
+                        "description": "代理人职务"
+                      },
+                      "phone": {
+                        "type": [
+                          "string",
+                          "null"
+                        ],
+                        "minLength": 1,
+                        "description": "代理人联系电话"
+                      },
+                      "tick": {
+                        "type": [
+                          "array",
+                          "null"
+                        ],
+                        "items": {
+                          "oneOf": [
+                            {
+                              "type": "string",
+                              "enum": [
+                                "一般授权",
+                                "特别授权"
+                              ]
+                            },
+                            {
+                              "type": "object",
+                              "properties": {
+                                "value": {
+                                  "type": [
+                                    "string",
+                                    "null"
+                                  ],
+                                  "minLength": 1,
+                                  "description": "明确选择的选项",
+                                  "enum": [
+                                    "一般授权",
+                                    "特别授权",
+                                    null
+                                  ]
+                                },
+                                "text": {
+                                  "type": [
+                                    "string",
+                                    "null"
+                                  ],
+                                  "minLength": 1,
+                                  "description": "原文明确附加说明；其他选项的文字追加在其他后面。"
+                                }
+                              },
+                              "required": [
+                                "value",
+                                "text"
+                              ],
+                              "additionalProperties": false
+                            }
+                          ]
+                        },
+                        "minItems": 1,
+                        "description": "代理权限，有说明时使用value/text；未明确选择时null，不能根据模板中出现的选项代填。"
+                      }
+                    },
+                    "required": [
+                      "has",
+                      "name",
+                      "unit",
+                      "position",
+                      "phone",
+                      "tick"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "required": [
+                  "category",
+                  "data"
+                ],
+                "additionalProperties": false
+              },
+              "minItems": 1,
+              "description": "原文明确的代理人记录"
+            }
+          },
+          "required": [
+            "原告",
+            "被告",
+            "第三人",
+            "委托诉讼代理人"
+          ],
+          "additionalProperties": false
+        },
+        "claims": {
+          "type": "object",
+          "properties": {
+            "narrative": {
+              "type": [
+                "array",
+                "null"
+              ],
+              "items": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "minLength": 1,
+                "description": "原文诉讼请求，按原有请求分行摘录"
+              },
+              "minItems": 1,
+              "description": "诉讼请求正文"
+            },
+            "1": {
+              "type": "object",
+              "properties": {
+                "截至日期": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "minLength": 1,
+                  "description": "主张尚欠本金的截至日期；只填明确完整日期，不补年月日。",
+                  "pattern": "^\\d{4}(?:年|-)\\d{1,2}(?:月|-)\\d{1,2}日?$"
+                },
+                "本金": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "minLength": 1,
+                  "description": "请求偿还的尚欠本金，区别于实际出借金额"
+                }
+              },
+              "required": [
+                "截至日期",
+                "本金"
+              ],
+              "additionalProperties": false
+            },
+            "2": {
+              "type": "object",
+              "properties": {
+                "截至日期": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "minLength": 1,
+                  "description": "主张利息的暂计截至日期；只填明确完整日期，不补年月日。",
+                  "pattern": "^\\d{4}(?:年|-)\\d{1,2}(?:月|-)\\d{1,2}日?$"
+                },
+                "利息": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "minLength": 1,
+                  "description": "原文明示的利息金额，不能计算补齐"
+                },
+                "计算方式": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "minLength": 1,
+                  "description": "原文利息请求的基数、利率、起止时间及计算规则，区别于合同利率约定"
+                },
+                "tick": {
+                  "type": [
+                    "array",
+                    "null"
+                  ],
+                  "items": {
+                    "type": "string",
+                    "enum": [
+                      "是",
+                      "否"
+                    ]
+                  },
+                  "minItems": 1,
+                  "description": "是否请求利息支付至实际清偿之日；未明确选择时null，不能根据模板中出现的选项代填。"
+                }
+              },
+              "required": [
+                "截至日期",
+                "利息",
+                "计算方式",
+                "tick"
+              ],
+              "additionalProperties": false
+            },
+            "3": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "minLength": 1,
+              "description": "是否要求提前还款或解除合同；按已确认范围只勾是或否",
+              "enum": [
+                "是",
+                "否",
+                null
+              ]
+            },
+            "4": {
+              "type": "object",
+              "properties": {
+                "value": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "minLength": 1,
+                  "description": "是否主张担保权利",
+                  "enum": [
+                    "是",
+                    "否",
+                    null
+                  ]
+                },
+                "text": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "minLength": 1,
+                  "description": "该项原文明示的具体内容"
+                }
+              },
+              "required": [
+                "value",
+                "text"
+              ],
+              "additionalProperties": false
+            },
+            "5": {
+              "type": "object",
+              "properties": {
+                "value": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "minLength": 1,
+                  "description": "是否主张实现债权的费用",
+                  "enum": [
+                    "是",
+                    "否",
+                    null
+                  ]
+                },
+                "text": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "minLength": 1,
+                  "description": "该项原文明示的具体内容"
+                }
+              },
+              "required": [
+                "value",
+                "text"
+              ],
+              "additionalProperties": false
+            },
+            "6": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "minLength": 1,
+              "description": "是否主张诉讼费用",
+              "enum": [
+                "是",
+                "否",
+                null
+              ]
+            },
+            "7": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "minLength": 1,
+              "description": "明确的其他请求"
+            },
+            "8": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "minLength": 1,
+              "description": "原文明示的标的总额及包含关系，不能自行求和"
+            }
+          },
+          "required": [
+            "narrative",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "7",
+            "8"
+          ],
+          "additionalProperties": false
+        },
+        "jurisdiction": {
+          "type": "object",
+          "properties": {
+            "1": {
+              "type": "object",
+              "properties": {
+                "value": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "minLength": 1,
+                  "description": "有无仲裁或法院管辖约定",
+                  "enum": [
+                    "有",
+                    "无",
+                    null
+                  ]
+                },
+                "text": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "minLength": 1,
+                  "description": "该项原文明示的具体内容"
+                }
+              },
+              "required": [
+                "value",
+                "text"
+              ],
+              "additionalProperties": false
+            },
+            "2": {
+              "type": "object",
+              "properties": {
+                "保全法院": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "minLength": 1,
+                  "description": "已发生诉前保全的法院"
+                },
+                "保全时间": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "minLength": 1,
+                  "description": "已发生诉前保全的时间；只填明确完整日期，不补年月日。",
+                  "pattern": "^\\d{4}(?:年|-)\\d{1,2}(?:月|-)\\d{1,2}日?$"
+                },
+                "保全案号": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "minLength": 1,
+                  "description": "已发生诉前保全的案号"
+                },
+                "tick": {
+                  "type": [
+                    "array",
+                    "null"
+                  ],
+                  "items": {
+                    "type": "string",
+                    "enum": [
+                      "是",
+                      "否"
+                    ]
+                  },
+                  "minItems": 1,
+                  "description": "是否已经诉前保全；未明确选择时null，不能根据模板中出现的选项代填。"
+                }
+              },
+              "required": [
+                "保全法院",
+                "保全时间",
+                "保全案号",
+                "tick"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "1",
+            "2"
+          ],
+          "additionalProperties": false
+        },
+        "facts": {
+          "type": "object",
+          "properties": {
+            "narrative": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "minLength": 1,
+              "description": "事实与理由独立正文，保持字符串；原文存在时直接摘录，不新增法条或事实"
+            },
+            "1": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "minLength": 1,
+              "description": "合同或借条的签订情况，明确无书面合同时可填原话"
+            },
+            "2": {
+              "type": "object",
+              "properties": {
+                "出借人": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "minLength": 1,
+                  "description": "明确的出借主体，多个主体保留原文分隔"
+                },
+                "借款人": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "minLength": 1,
+                  "description": "明确的借款主体，不能从职务或关系推定"
+                }
+              },
+              "required": [
+                "出借人",
+                "借款人"
+              ],
+              "additionalProperties": false
+            },
+            "3": {
+              "type": "object",
+              "properties": {
+                "约定金额": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "minLength": 1,
+                  "description": "原文明确约定的借款金额"
+                },
+                "实际提供金额": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "minLength": 1,
+                  "description": "原文明确实际交付的借款金额"
+                },
+                "tick": {
+                  "type": [
+                    "array",
+                    "null"
+                  ],
+                  "items": {
+                    "oneOf": [
+                      {
+                        "type": "string",
+                        "enum": [
+                          "现金",
+                          "转账",
+                          "其他"
+                        ]
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "value": {
+                            "type": [
+                              "string",
+                              "null"
+                            ],
+                            "minLength": 1,
+                            "description": "明确选择的选项",
+                            "enum": [
+                              "现金",
+                              "转账",
+                              "其他",
+                              null
+                            ]
+                          },
+                          "text": {
+                            "type": [
+                              "string",
+                              "null"
+                            ],
+                            "minLength": 1,
+                            "description": "原文明确附加说明；其他选项的文字追加在其他后面。"
+                          }
+                        },
+                        "required": [
+                          "value",
+                          "text"
+                        ],
+                        "additionalProperties": false
+                      }
+                    ]
+                  },
+                  "minItems": 1,
+                  "description": "借款提供方式，其他的说明用value/text；未明确选择时null，不能根据模板中出现的选项代填。"
+                }
+              },
+              "required": [
+                "约定金额",
+                "实际提供金额",
+                "tick"
+              ],
+              "additionalProperties": false
+            },
+            "4": {
+              "type": "object",
+              "properties": {
+                "约定期限起": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "minLength": 1,
+                  "description": "约定借款期限起日；只填明确完整日期，不补年月日。",
+                  "pattern": "^\\d{4}(?:年|-)\\d{1,2}(?:月|-)\\d{1,2}日?$"
+                },
+                "约定期限止": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "minLength": 1,
+                  "description": "约定借款期限止日；只填明确完整日期，不补年月日。",
+                  "pattern": "^\\d{4}(?:年|-)\\d{1,2}(?:月|-)\\d{1,2}日?$"
+                },
+                "tick": {
+                  "type": [
+                    "array",
+                    "null"
+                  ],
+                  "items": {
+                    "type": "string",
+                    "enum": [
+                      "是",
+                      "否"
+                    ]
+                  },
+                  "minItems": 1,
+                  "description": "是否到期，只依据明确表达或勾选；未明确选择时null，不能根据模板中出现的选项代填。"
+                }
+              },
+              "required": [
+                "约定期限起",
+                "约定期限止",
+                "tick"
+              ],
+              "additionalProperties": false
+            },
+            "5": {
+              "type": "object",
+              "properties": {
+                "利率": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "minLength": 1,
+                  "description": "借款约定利率及年、季、月等周期，不能用诉请利率替代"
+                },
+                "利率条款": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "minLength": 1,
+                  "description": "借款约定利率的合同条款或原文内容"
+                },
+                "tick": {
+                  "type": [
+                    "array",
+                    "null"
+                  ],
+                  "items": {
+                    "type": "string",
+                    "enum": [
+                      "是",
+                      "否"
+                    ]
+                  },
+                  "minItems": 1,
+                  "description": "是否有借款利率约定；未明确选择时null，不能根据模板中出现的选项代填。"
+                }
+              },
+              "required": [
+                "利率",
+                "利率条款",
+                "tick"
+              ],
+              "additionalProperties": false
+            },
+            "6": {
+              "type": [
+                "array",
+                "null"
+              ],
+              "items": {
+                "type": "object",
+                "properties": {
+                  "日期": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "minLength": 1,
+                    "description": "实际提供该笔借款的日期；只填明确完整日期，不补年月日。",
+                    "pattern": "^\\d{4}(?:年|-)\\d{1,2}(?:月|-)\\d{1,2}日?$"
+                  },
+                  "金额": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "minLength": 1,
+                    "description": "该笔实际交付金额，逐笔保留，不合计"
+                  }
+                },
+                "required": [
+                  "日期",
+                  "金额"
+                ],
+                "additionalProperties": false
+              },
+              "minItems": 1,
+              "description": "逐笔借款提供记录"
+            },
+            "7": {
+              "type": "object",
+              "properties": {
+                "tick": {
+                  "type": [
+                    "array",
+                    "null"
+                  ],
+                  "items": {
+                    "oneOf": [
+                      {
+                        "type": "string",
+                        "enum": [
+                          "到期一次性还本付息",
+                          "按月计息、到期一次性还本",
+                          "按季计息、到期一次性还本",
+                          "按年计息、到期一次性还本",
+                          "其他"
+                        ]
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "value": {
+                            "type": [
+                              "string",
+                              "null"
+                            ],
+                            "minLength": 1,
+                            "description": "明确选择的选项",
+                            "enum": [
+                              "到期一次性还本付息",
+                              "按月计息、到期一次性还本",
+                              "按季计息、到期一次性还本",
+                              "按年计息、到期一次性还本",
+                              "其他",
+                              null
+                            ]
+                          },
+                          "text": {
+                            "type": [
+                              "string",
+                              "null"
+                            ],
+                            "minLength": 1,
+                            "description": "原文明确附加说明；其他选项的文字追加在其他后面。"
+                          }
+                        },
+                        "required": [
+                          "value",
+                          "text"
+                        ],
+                        "additionalProperties": false
+                      }
+                    ]
+                  },
+                  "minItems": 1,
+                  "description": "约定还款方式，其他说明用value/text；未明确选择时null，不能根据模板中出现的选项代填。"
+                }
+              },
+              "required": [
+                "tick"
+              ],
+              "additionalProperties": false
+            },
+            "8": {
+              "type": "object",
+              "properties": {
+                "已还本金": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "minLength": 1,
+                  "description": "已归还的本金；明确未还本金才可记0"
+                },
+                "已还利息": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "minLength": 1,
+                  "description": "已归还的利息；未提及不等于0"
+                },
+                "还息至": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "minLength": 1,
+                  "description": "原文明示已支付利息至何日，不用到期日替代；只填明确完整日期，不补年月日。",
+                  "pattern": "^\\d{4}(?:年|-)\\d{1,2}(?:月|-)\\d{1,2}日?$"
+                }
+              },
+              "required": [
+                "已还本金",
+                "已还利息",
+                "还息至"
+              ],
+              "additionalProperties": false
+            },
+            "9": {
+              "type": "object",
+              "properties": {
+                "逾期时间": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "minLength": 1,
+                  "description": "明确逾期起日，不根据利息起算日或期限自行计算；只填明确完整日期，不补年月日。",
+                  "pattern": "^\\d{4}(?:年|-)\\d{1,2}(?:月|-)\\d{1,2}日?$"
+                },
+                "tick": {
+                  "type": [
+                    "array",
+                    "null"
+                  ],
+                  "items": {
+                    "type": "string",
+                    "enum": [
+                      "是",
+                      "否"
+                    ]
+                  },
+                  "minItems": 1,
+                  "description": "是否逾期还款；未明确选择时null，不能根据模板中出现的选项代填。"
+                }
+              },
+              "required": [
+                "逾期时间",
+                "tick"
+              ],
+              "additionalProperties": false
+            },
+            "10": {
+              "type": "object",
+              "properties": {
+                "签订时间": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "minLength": 1,
+                  "description": "物的担保合同签订日期；只填明确完整日期，不补年月日。",
+                  "pattern": "^\\d{4}(?:年|-)\\d{1,2}(?:月|-)\\d{1,2}日?$"
+                },
+                "tick": {
+                  "type": [
+                    "array",
+                    "null"
+                  ],
+                  "items": {
+                    "type": "string",
+                    "enum": [
+                      "是",
+                      "否"
+                    ]
+                  },
+                  "minItems": 1,
+                  "description": "是否签订抵押或质押合同；未明确选择时null，不能根据模板中出现的选项代填。"
+                }
+              },
+              "required": [
+                "签订时间",
+                "tick"
+              ],
+              "additionalProperties": false
+            },
+            "11": {
+              "type": "object",
+              "properties": {
+                "担保人": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "minLength": 1,
+                  "description": "明确提供物的担保的主体"
+                },
+                "担保物": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "minLength": 1,
+                  "description": "明确抵押或质押的财产"
+                }
+              },
+              "required": [
+                "担保人",
+                "担保物"
+              ],
+              "additionalProperties": false
+            },
+            "12": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "minLength": 1,
+              "description": "是否最高额抵押或质押，按已确认范围只勾是或否",
+              "enum": [
+                "是",
+                "否",
+                null
+              ]
+            },
+            "13": {
+              "type": "object",
+              "properties": {
+                "tick": {
+                  "type": [
+                    "array",
+                    "null"
+                  ],
+                  "items": {
+                    "type": "string",
+                    "enum": [
+                      "是",
+                      "正式登记",
+                      "预告登记",
+                      "否"
+                    ]
+                  },
+                  "minItems": 1,
+                  "description": "抵押或质押登记情况，登记类型仅依据明确内容；未明确选择时null，不能根据模板中出现的选项代填。"
+                }
+              },
+              "required": [
+                "tick"
+              ],
+              "additionalProperties": false
+            },
+            "14": {
+              "type": "object",
+              "properties": {
+                "签订时间": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "minLength": 1,
+                  "description": "保证合同签订日期；只填明确完整日期，不补年月日。",
+                  "pattern": "^\\d{4}(?:年|-)\\d{1,2}(?:月|-)\\d{1,2}日?$"
+                },
+                "保证人": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "minLength": 1,
+                  "description": "明确保证人，不能自动设为被告或第三人"
+                },
+                "主要内容": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "minLength": 1,
+                  "description": "保证合同明确内容"
+                },
+                "tick": {
+                  "type": [
+                    "array",
+                    "null"
+                  ],
+                  "items": {
+                    "type": "string",
+                    "enum": [
+                      "是",
+                      "否",
+                      "一般保证",
+                      "连带责任保证"
+                    ]
+                  },
+                  "minItems": 1,
+                  "description": "保证合同及保证方式；未明确选择时null，不能根据模板中出现的选项代填。"
+                }
+              },
+              "required": [
+                "签订时间",
+                "保证人",
+                "主要内容",
+                "tick"
+              ],
+              "additionalProperties": false
+            },
+            "15": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "minLength": 1,
+              "description": "是否有其他担保方式，按已确认范围只勾是或否",
+              "enum": [
+                "是",
+                "否",
+                null
+              ]
+            },
+            "16": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "minLength": 1,
+              "description": "其他需要说明的事实"
+            },
+            "17": {
+              "type": "object",
+              "properties": {
+                "合同约定": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "minLength": 1,
+                  "description": "原文明示的请求所依据的合同约定"
+                },
+                "法律规定": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "minLength": 1,
+                  "description": "原文明示的法条和法律依据，不能生成补充"
+                }
+              },
+              "required": [
+                "合同约定",
+                "法律规定"
+              ],
+              "additionalProperties": false
+            },
+            "18": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "minLength": 1,
+              "description": "原文证据清单，字符串中可用换行，不新增证据"
+            }
+          },
+          "required": [
+            "narrative",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "7",
+            "8",
+            "9",
+            "10",
+            "11",
+            "12",
+            "13",
+            "14",
+            "15",
+            "16",
+            "17",
+            "18"
+          ],
+          "additionalProperties": false
+        },
+        "mediation": {
+          "type": "object",
+          "properties": {
+            "1": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "enum": [
+                "了解",
+                "不了解",
+                null
+              ],
+              "description": "总体了解程度；固定告知内容不代表本人选择。"
+            },
+            "2": {
+              "type": "array",
+              "items": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "enum": [
+                  "了解",
+                  "不了解",
+                  null
+                ],
+                "description": "本槽位独立选择；未知null。"
+              },
+              "minItems": 5,
+              "maxItems": 5,
+              "description": "五槽位依次为调解启动排期、费用、更换组织调解员、保密性、协议效力；只说了解不代填五项。"
+            },
+            "3": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "enum": [
+                "是",
+                "否",
+                "暂不确定，想要了解更多内容",
+                null
+              ],
+              "description": "明确调解意愿；不从了解推愿意。"
+            }
+          },
+          "required": [
+            "1",
+            "2",
+            "3"
+          ],
+          "additionalProperties": false,
+          "description": ""
+        },
+        "signature": {
+          "type": "object",
+          "properties": {
+            "signer": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "minLength": 1,
+              "description": "落款具状人，只有正文原告信息时不自动代签"
+            },
+            "legalRep": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "minLength": 1,
+              "description": "落款法定代表人，需落款有明确表达"
+            },
+            "date": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "minLength": 1,
+              "description": "原文落款日期，不补今天或其他事件日期；只填明确完整日期，不补年月日。",
+              "pattern": "^\\d{4}(?:年|-)\\d{1,2}(?:月|-)\\d{1,2}日?$"
+            }
+          },
+          "required": [
+            "signer",
+            "legalRep",
+            "date"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "parties",
+        "claims",
+        "jurisdiction",
+        "facts",
+        "mediation",
+        "signature"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "docType",
+    "blocks"
+  ],
+  "additionalProperties": false
+}

@@ -2,7 +2,7 @@
 from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-VERSION = '1.0.0'
+VERSION = '1.1.1'
 SCHEMA_PATH = BASE_DIR / 'config/divorce.schema.json'
 FIELDS_PATH = BASE_DIR / 'config/divorce.fields.json'
 BUSINESS_TYPE = 'divorce-dispute'

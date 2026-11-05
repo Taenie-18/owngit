@@ -74,9 +74,58 @@ def clear_field(output, path, warnings, code):
         pass  # 内部错误路径只记警告，不能据此清空整份结果。
 
 
+def validate_parties(output, entities, document, warnings, roles=('原告', '被告'), check_attributes=True):
+    """核对明示角色，属性近邻检查按业务需要启用。"""
+    blocks = output['blocks']
+    for role in roles:
+        known = {e['name'] for e in entities if e['role'] == role}
+        parties = blocks['parties'][role] or []
+        for i, party in enumerate(parties):
+            data = party['data']
+            base = f'/blocks/parties/{role}/{i}/data'
+            if data['name'] and known and data['name'] not in known:
+                clear_field(output, base, warnings, 'PARTY_MISMATCH')
+                continue
+            if not check_attributes:
+                continue
+            names = [p['data']['name'] for r in roles for p in blocks['parties'][r] or [] if p['data'] and p['data']['name']]
+            for field in ('phone', 'idNumber', 'domicile', 'residence'):
+                value = data.get(field)
+                if not value or not data['name']:
+                    continue
+                owners = []
+                for text in document.file_context:
+                    start = text.find(value)
+                    while start >= 0:
+                        positions = [(text.rfind(n, 0, start + 1), n) for n in names]
+                        positions = [p for p in positions if p[0] >= 0]
+                        if positions:
+                            owners.append(max(positions)[1])
+                        start = text.find(value, start + 1)
+                if owners and data['name'] not in owners:
+                    clear_field(output, base + '/' + field, warnings, 'PARTY_ATTRIBUTE_MISMATCH')
+
+
+def validate_mediation(output, document, warnings):
+    blocks = output['blocks']
+    # 模板若有五组明确勾选，只处理不一致的槽位，不影响其他调解信息。
+    for text in document.file_context:
+        text = re.sub(r'\s+', '', text)
+        start = text.find('是否了解先行调解')
+        end = text.find('是否考虑先行调解', start)
+        marks = re.findall(r'了解([□☐☑√✓])不了解([□☐☑√✓])', text[start:end]) if start >= 0 and end > start else []
+        if len(marks) == 5:
+            for i, (yes, no) in enumerate(marks):
+                actual = None if (yes in '☑√✓') == (no in '☑√✓') else '了解' if yes in '☑√✓' else '不了解'
+                if blocks['mediation']['2'][i] != actual:
+                    clear_field(output, f'/blocks/mediation/2/{i}', warnings, 'MEDIATION_POSITION')
+
+
 class ResultValidator:
-    def __init__(self):
-        self.schema = load_schema()
+    def __init__(self, business_type='divorce-dispute'):
+        from .businesses.registry import get_business
+        self.business_module = get_business(business_type)
+        self.schema = load_schema(business_type)
         Draft202012Validator.check_schema(self.schema)
         self.validator = Draft202012Validator(self.schema)
 
@@ -85,7 +134,19 @@ class ResultValidator:
         if 'const' in node:
             return node['const']
         if 'oneOf' in node:
-            branch = next((n for n in node['oneOf'] if isinstance(value, dict) == (n.get('type') == 'object')), node['oneOf'][0])
+            if value is None:
+                return None
+            branches = node['oneOf']
+            records = [n for n in branches if 'category' in n.get('properties', {})]
+            if records:
+                # 自然人和组织同为对象，必须按category挑选分支，不能只看对象类型。
+                category = value.get('category') if isinstance(value, dict) else None
+                branch = next((n for n in records if n['properties']['category'].get('const') == category), None)
+                if branch is None:
+                    warnings.append({'code': 'UNSUPPORTED_CATEGORY', 'path': path})
+                    return None
+            else:
+                branch = next((n for n in branches if isinstance(value, dict) == (n.get('type') == 'object')), branches[0])
             return self.repair(value, branch, warnings, path)
         if node.get('type') == 'object':
             data = value if isinstance(value, dict) else {}
@@ -152,8 +213,24 @@ class ResultValidator:
             if value is None or path == '/docType' or path.endswith('/category'):
                 continue
             # 不把“说不清”等原话硬塞进具体要素；叙述区保留原话，调解合法选项除外。
-            if '/narrative/' not in path and path != '/blocks/mediation/3' and re.search(r'说不清|不清楚|未提供|没想好|不知道|不确定|无法确定|可能|也许|好像', value):
-                clear_field(output, path, warnings, 'UNCERTAIN_VALUE')
+            # if '/narrative' not in path and path != '/blocks/mediation/3' and re.search(r'说不清|不清楚|未提供|没想好|不知道|不确定|无法确定|可能|也许|好像', value):
+            #     clear_field(output, path, warnings, 'UNCERTAIN_VALUE')
+            #     continue
+            #“已无和好可能”等属于明确表述，排除后再检查其他不确定表达。
+            uncertain_text = re.sub(
+                r'(?:已无|再无|毫无|没有|不存在|无)(?:任何)?(?:和好|复合)(?:的)?可能(?:性)?',
+                '',
+                value,
+            )
+            if(
+                '/narrative' not in path
+                and path != '/blocks/mediation/3'
+                and re.search(
+                r'说不清|不清楚|未提供|没想好|不知道|不确定|无法确定|可能|也许|好像',
+                uncertain_text,
+            )
+            ):
+                clear_field(output, path, warnings, 'SOURCE_UNCERTAIN')
                 continue
             refs = [r for r in checked if path == r['path'] or path.startswith(r['path'] + '/')]
             if not refs:
@@ -166,7 +243,8 @@ class ResultValidator:
             for amount, unit in re.findall(r'(\d+(?:\.\d+)?)\s*(亿元|万元|元)', value):
                 quantities = re.findall(r'(\d+(?:\.\d+)?)\s*(亿元|万元|元)', proof.replace(',', ''))
                 invalid |= not any(Decimal(amount) == Decimal(a) and unit == u for a, u in quantities)
-            if path.endswith(('/name', '/idNumber', '/phone', '/domicile', '/residence', '/signer')):
+            if path.endswith(('/name', '/idNumber', '/phone', '/domicile', '/residence', '/signer',
+                              '/creditCode', '/registrationPlace', '/legalRep')):
                 invalid |= compact(value) not in compact(proof)
             if invalid:
                 clear_field(output, path, warnings, 'VALUE_UNGROUNDED')
@@ -185,61 +263,4 @@ class ResultValidator:
         return checked
 
     def business(self, output, entities, evidence, document, warnings):
-        blocks = output['blocks']
-        for role in ('原告', '被告'):
-            known = {e['name'] for e in entities if e['role'] == role}
-            parties = blocks['parties'][role] or []
-            for i, party in enumerate(parties):
-                data = party['data']
-                base = f'/blocks/parties/{role}/{i}/data'
-                if data['name'] and known and data['name'] not in known:
-                    clear_field(output, base, warnings, 'PARTY_MISMATCH')
-                    continue
-                names = [p['data']['name'] for r in ('原告', '被告') for p in blocks['parties'][r] or [] if p['data'] and p['data']['name']]
-                for field in ('phone', 'idNumber', 'domicile', 'residence'):
-                    value = data[field]
-                    if not value or not data['name']:
-                        continue
-                    owners = []
-                    for text in document.file_context:
-                        start = text.find(value)
-                        while start >= 0:
-                            positions = [(text.rfind(n, 0, start + 1), n) for n in names]
-                            positions = [p for p in positions if p[0] >= 0]
-                            if positions:
-                                owners.append(max(positions)[1])
-                            start = text.find(value, start + 1)
-                    if owners and data['name'] not in owners:
-                        clear_field(output, base + '/' + field, warnings, 'PARTY_ATTRIBUTE_MISMATCH')
-        claims = blocks['claims']
-        for key, negative in [('2', '无财产'), ('3', '无债务'), ('4', '无此问题'), ('5', '无此问题'), ('6', '无此问题'), ('7', '无此问题')]:
-            item = claims[key]
-            ticks = item['tick'] or []
-            if negative in ticks and (len(ticks) > 1 or any(has_value(v) for k, v in item.items() if k != 'tick')):
-                clear_field(output, f'/blocks/claims/{key}/tick', warnings, 'CHOICE_CONFLICT')
-            if key in ('5', '6') and '原告' in ticks and '被告' in ticks:
-                clear_field(output, f'/blocks/claims/{key}/tick', warnings, 'AMBIGUOUS_SUBJECT')
-        pre = blocks['jurisdiction']['1']
-        if len(pre['tick'] or []) > 1 or ('否' in (pre['tick'] or []) and any(has_value(v) for k, v in pre.items() if k != 'tick')):
-            clear_field(output, '/blocks/jurisdiction/1/tick', warnings, 'CHOICE_CONFLICT')
-        for key in ('2', '3', '4'):
-            list_key, anchor = {'2': ('财产项', '明细'), '3': ('债务项', '名称'), '4': ('子女项', '姓名')}[key]
-            for i, item in enumerate(claims[key][list_key] or []):
-                allocation = '承担主体' if key == '3' else '归属'
-                for ref in evidence:
-                    for line in ref['quote'].splitlines():
-                        if item[anchor] and compact(item[anchor]) in compact(line):
-                            marks = [r for r in ('原告', '被告', '其他') if selected(line, r)]
-                            if marks and item[allocation] and item[allocation] not in marks:
-                                clear_field(output, f'/blocks/claims/{key}/{list_key}/{i}/{allocation}', warnings, 'ASSIGNMENT_MISMATCH')
-        # 模板若有五组明确勾选，只处理不一致的槽位，不影响其他调解信息。
-        for text in document.file_context:
-            text = re.sub(r'\s+', '', text)
-            start = text.find('是否了解先行调解')
-            end = text.find('是否考虑先行调解', start)
-            marks = re.findall(r'了解([□☐☑√✓])不了解([□☐☑√✓])', text[start:end]) if start >= 0 and end > start else []
-            if len(marks) == 5:
-                for i, (yes, no) in enumerate(marks):
-                    actual = None if (yes in '☑√✓') == (no in '☑√✓') else '了解' if yes in '☑√✓' else '不了解'
-                    if blocks['mediation']['2'][i] != actual:
-                        clear_field(output, f'/blocks/mediation/2/{i}', warnings, 'MEDIATION_POSITION')
+        self.business_module.validate(output, entities, evidence, document, warnings)
